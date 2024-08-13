@@ -17,7 +17,7 @@ export default function Login(): JSX.Element {
   const navigation = useNavigate();
   const { handleSubmit, register, reset } = useFormContext();
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: any) => {
     if (action === "Sign Up") {
       await signupUser(data);
     }
