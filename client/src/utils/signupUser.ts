@@ -1,11 +1,7 @@
 import axios from "axios";
+import { LoginSchema } from "../validations/loginSchema";
 
-type Props = {
-  username: string;
-  password: string;
-};
-
-export const signupUser = async ({ username, password }: Props) => {
+export const signupUser = async ({ username, password }: LoginSchema) => {
   console.log(username, password);
   alert("nice");
   const auth = await axios.post(`${import.meta.env.VITE_BACKEND_URL}auth`, {
