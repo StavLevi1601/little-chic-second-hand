@@ -8,20 +8,24 @@ import {
   Submit,
   SubmitWhite,
 } from "./LoginStyled";
-import { useFormContext } from "react-hook-form";
+import { SubmitHandler, useFormContext } from "react-hook-form";
 import { loginUser } from "../../functions/loginUser";
 import { signupUser } from "../../functions/signupUser";
 import { useNavigate } from "react-router-dom";
-export default function Login(): JSX.Element {
-  const [action, setAction] = useState("Sign Up");
-  const navigation = useNavigate();
-  const { handleSubmit, register, reset } = useFormContext();
+import { LoginSchema } from "../../validations/loginSchema";
 
-  const onSubmit = async (data: any) => {
-    if (action === "Sign Up") {
+type Action = "sign_up" | "login";
+
+export default function Login(): JSX.Element {
+  const [action, setAction] = useState<Action>("sign_up");
+  const navigation = useNavigate();
+  const { handleSubmit, register, reset } = useFormContext<LoginSchema>();
+
+  const onSubmit: SubmitHandler<LoginSchema> = async (data) => {
+    if (action === "sign_up") {
       await signupUser(data);
     }
-    if (action === "Log in") {
+    if (action === "login") {
       const redirectPath = await loginUser(data);
       if (redirectPath?.status === 200) {
         navigation("/welcome");
@@ -42,19 +46,19 @@ export default function Login(): JSX.Element {
             {...register("password")}
           />
           <SubmitContainer>
-            {action === "Sign Up" ? (
+            {action === "sign_up" ? (
               <>
-                <Submit type="submit">Sign Up</Submit>
-                <SubmitWhite onClick={() => setAction("Log in")}>
-                  Log In
+                <Submit type="submit">sign_up</Submit>
+                <SubmitWhite onClick={() => setAction("login")}>
+                  login
                 </SubmitWhite>
               </>
             ) : (
               <>
-                <SubmitWhite onClick={() => setAction("Sign Up")}>
-                  Sign Up
+                <SubmitWhite onClick={() => setAction("sign_up")}>
+                  sign_up
                 </SubmitWhite>
-                <Submit type="submit">Log In</Submit>
+                <Submit type="submit">login</Submit>
               </>
             )}
           </SubmitContainer>

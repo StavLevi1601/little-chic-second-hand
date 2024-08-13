@@ -2,7 +2,6 @@ import axios from "axios";
 
 type Props = {
   username: string;
-  email: string;
   password: string;
 };
 
