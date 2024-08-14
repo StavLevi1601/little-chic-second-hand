@@ -9,8 +9,8 @@ import {
   SubmitWhite,
 } from "./LoginStyled";
 import { SubmitHandler, useFormContext } from "react-hook-form";
-import { loginUser } from "../../functions/loginUser";
-import { signupUser } from "../../functions/signupUser";
+import { loginUser } from "../../utils/loginUser";
+import { signupUser } from "../../utils/signupUser";
 import { useNavigate } from "react-router-dom";
 import { LoginSchema } from "../../validations/loginSchema";
 

@@ -5,33 +5,35 @@ import { Users } from "../Models/users.js";
 const router = express.Router();
 
 router.post("/signup", async (req, res) => {
-  try {
-    const existingUser = await Users.findOne({
-      username: req.body.username,
-    });
+  console.log("fdsfsfsf");
+  // try {
+  //   const existingUser = await Users.findOne({
+  //     username: req.body.username,
+  //   });
 
-    if (existingUser) {
-      return res.json({
-        success: false,
-        message: "user already exists",
-      });
-    }
+  //   if (existingUser) {
+  //     return res.status(409).json({
+  //       success: false,
+  //       message: "User already exists",
+  //     });
+  //   }
 
-    const user = new Users({
-      username: req.body.username,
-      password: req.body.password,
-    });
+  //   const user = new Users({
+  //     username: req.body.username,
+  //     password: req.body.password,
+  //   });
 
-    await user.save();
-    if (res.status === 201) {
-      return `/welcome/${username}`;
-    }
-  } catch (e) {
-    res.json({
-      success: false,
-      error: e.message,
-    });
-  }
+  //   await user.save();
+  //   return res.status(201).json({
+  //     success: true,
+  //     message: "User created successfully",
+  //   });
+  // } catch (e) {
+  //   res.status(500).json({
+  //     success: false,
+  //     error: e.message,
+  //   });
+  // }
 });
 
 router.post("/login", authenticateToken, async (req, res) => {
