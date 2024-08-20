@@ -7,9 +7,12 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
+    const data = await Items.find({});
+    console.log("data", data);
+
     res.json({
       success: true,
-      message: "items working",
+      data: data,
     });
   } catch (e) {
     res.json({
@@ -21,7 +24,8 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const data = await req.body.json();
+    const data = req.body; // אין צורך ב-json()
+    console.log(data);
     const validateData = itemSchema.safeParse(data);
     if (!validateData.success) {
       return res.status(500).json({
@@ -34,9 +38,16 @@ router.post("/", async (req, res) => {
     const itemData = { ...validateData.data, itemId };
     const item = new Items(itemData);
     await item.save();
-
-    return res.redirect(`/items/${itemId}`);
-  } catch (e) {}
+    return res.json({
+      success: true,
+      item,
+    });
+  } catch (e) {
+    res.json({
+      success: false,
+      error: e.message,
+    });
+  }
 });
 
 router.get("/:itemId", async (req, res) => {

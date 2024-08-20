@@ -6,7 +6,7 @@ import crypto from "crypto";
 router.post("/", async (req, res) => {
   try {
     const token = generateAccessToken({
-      username: req.body.username,
+      username: req.body.email,
       password: req.body.password,
     });
 

@@ -5,6 +5,8 @@ export const itemSchema = z.object({
   title: z.string().min(1),
   body: z.string().min(1),
   status: z.enum(status),
+  price: z.number(),
+  size: z.string(),
 });
 
 // id: String,

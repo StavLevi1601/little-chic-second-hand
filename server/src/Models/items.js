@@ -7,6 +7,8 @@ export const Items = mongoose.model("Items", {
   body: String,
   buyer_id: String,
   seller_id: String,
+  price: Number,
+  size: String,
   status: {
     type: String,
     enum: ["available", "sold"],

@@ -4,65 +4,87 @@ import {
   Header,
   Inputs,
   Input,
-  SubmitContainer,
   Submit,
-  SubmitWhite,
-} from "./LoginStyled";
-import { SubmitHandler, useFormContext } from "react-hook-form";
+  Error,
+  SubHeader,
+  ButtonAction,
+  DividerWithText,
+} from "../login/login.style";
+import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { loginUser } from "../../utils/loginUser";
 import { signupUser } from "../../utils/signupUser";
+import { LoginSchema, loginSchema } from "../../validations/loginSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import useAuthStore from "../../store/store";
 import { useNavigate } from "react-router-dom";
-import { LoginSchema } from "../../validations/loginSchema";
 
 type Action = "sign_up" | "login";
 
 export default function Login(): JSX.Element {
+  const { login } = useAuthStore();
+  const navigate = useNavigate(); // יצירת useNavigate
+
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<LoginSchema>({
+    resolver: zodResolver(loginSchema),
+  });
   const [action, setAction] = useState<Action>("sign_up");
-  const navigation = useNavigate();
-  const { handleSubmit, register, reset } = useFormContext<LoginSchema>();
 
   const onSubmit: SubmitHandler<LoginSchema> = async (data) => {
     if (action === "sign_up") {
       await signupUser(data);
     }
     if (action === "login") {
-      const redirectPath = await loginUser(data);
-      if (redirectPath?.status === 200) {
-        navigation("/welcome");
+      const result = await loginUser(data);
+      if (result?.status === 200) {
+        login(data);
+        navigate("/");
       }
     }
-    reset();
+  };
+
+  const handleAction = () => {
+    if (action === "sign_up") {
+      setAction("login");
+    } else {
+      setAction("sign_up");
+    }
   };
 
   return (
     <Container>
-      <Header>{action}</Header>
+      <Header>{action === "sign_up" ? "Sign Up" : "Login"}</Header>
+      <SubHeader>
+        Already a member?{" "}
+        <ButtonAction onClick={handleAction}>
+          {action === "sign_up" ? "Login" : "Sign Up"}
+        </ButtonAction>
+      </SubHeader>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Inputs>
-          <Input type="text" placeholder="Username" {...register("username")} />
+          <Input type="text" placeholder="email" {...register("email")} />
+          <Error>{errors.email ? errors.email.message : ""}</Error>
           <Input
             type="password"
             placeholder="Password"
             {...register("password")}
           />
-          <SubmitContainer>
-            {action === "sign_up" ? (
-              <>
-                <Submit type="submit">sign_up</Submit>
-                <SubmitWhite onClick={() => setAction("login")}>
-                  login
-                </SubmitWhite>
-              </>
-            ) : (
-              <>
-                <SubmitWhite onClick={() => setAction("sign_up")}>
-                  sign_up
-                </SubmitWhite>
-                <Submit type="submit">login</Submit>
-              </>
-            )}
-          </SubmitContainer>
+          <Error>{errors.password ? errors.password.message : ""}</Error>
+
+          <Submit>{action === "sign_up" ? "Sign Up" : "Login"}</Submit>
         </Inputs>
+        <DividerWithText>
+          {action === "sign_up" ? "or sign up with" : "or login with"}
+        </DividerWithText>
+        <GoogleOAuthProvider clientId="43146293136-peiao5lqgf02ng8pg1q88bie80vbjpg9.apps.googleusercontent.com">
+          <div>
+            <GoogleLogin onSuccess={() => console.log("Success")} />
+          </div>
+        </GoogleOAuthProvider>
       </form>
     </Container>
   );

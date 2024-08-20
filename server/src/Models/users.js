@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
 export const Users = mongoose.model("Users", {
-  username: String,
+  email: String,
   password: String,
 });

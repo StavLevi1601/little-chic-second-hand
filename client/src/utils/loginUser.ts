@@ -1,10 +1,10 @@
 import axios from "axios";
 import { LoginSchema } from "../validations/loginSchema";
 
-export const loginUser = async ({ username, password }: LoginSchema) => {
+export const loginUser = async ({ email, password }: LoginSchema) => {
   try {
     const auth = await axios.post(`${import.meta.env.VITE_BACKEND_URL}auth`, {
-      username,
+      email,
       password,
     });
 
@@ -12,7 +12,7 @@ export const loginUser = async ({ username, password }: LoginSchema) => {
       const result = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}users/login`,
         {
-          username,
+          email,
           password,
         },
         {
@@ -21,6 +21,8 @@ export const loginUser = async ({ username, password }: LoginSchema) => {
           },
         }
       );
+      localStorage.setItem("token", auth.data.token);
+
       return result;
     }
   } catch (error) {
