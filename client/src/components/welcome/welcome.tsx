@@ -53,8 +53,6 @@ function Welcome() {
     return () => clearInterval(interval);
   });
 
-  console.log("itemsff", items);
-
   return (
     <Container style={{ flexDirection: "column" }}>
       <div style={{ display: "flex", flexDirection: "column" }}>
@@ -70,7 +68,7 @@ function Welcome() {
         style={{
           marginTop: "20px",
           height: "400px",
-          backgroundImage: backgrounds[currentBackground], // שימוש ב-backgroundIma
+          backgroundImage: backgrounds[currentBackground],
         }}
       ></div>
       <div>

@@ -88,19 +88,10 @@ export const DividerWithText = styled.div`
   font-family: ${({ theme }) => theme.fonts.secondary};
   width: 100%;
   margin: 20px 0;
-
   &::before,
   &::after {
     content: "";
     flex: 1;
     border-bottom: 1px solid #ddd;
-  }
-
-  &:not(:empty)::before {
-    margin-right: 0.25em;
-  }
-
-  &:not(:empty)::after {
-    margin-left: 0.25em;
   }
 `;

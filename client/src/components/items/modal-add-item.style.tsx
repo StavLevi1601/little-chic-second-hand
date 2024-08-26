@@ -29,8 +29,11 @@ export const Modal = styled.div`
 export const Title = styled.h2`
   font-size: 30px;
   margin-bottom: 20px;
-  font-family: ${({ theme }) => theme.fonts.secondary};
+  font-family: ${({ theme }) => theme.fonts.primary};
+  font-weight: 200;
   color: #333;
+  margin-bottom: "20px";
+  font-size: "24px";
 `;
 
 export const Form = styled.form`
@@ -41,8 +44,10 @@ export const Form = styled.form`
 
 export const Label = styled.label`
   margin-bottom: 10px;
+
   font-size: 16px;
   color: #333;
+  margin-bottom: "10px";
 `;
 
 export const Input = styled.input`
@@ -50,6 +55,8 @@ export const Input = styled.input`
   margin-bottom: 20px;
   font-size: 16px;
   border: 1px solid #ccc;
+  margin-bottom: "20px";
+  font-size: "16px";
 `;
 
 export const ImageInput = styled.input`
@@ -61,18 +68,25 @@ export const TextArea = styled.textarea`
   margin-bottom: 20px;
   font-size: 16px;
   border: 1px solid #ccc;
+  margin-bottom: "20px";
+  height: "80px";
 `;
 
 export const Button = styled.button`
   padding: 10px;
   font-size: 16px;
-  color: white;
-  background-color: #007bff;
-  border: none;
-  border-radius: 5px;
+  color: grey;
+  background-color: white;
   cursor: pointer;
+  margin-top: auto;
+  border: 1px solid black;
   width: 100%;
-  &:hover {
-    background-color: #0056b3;
-  }
+  font-weight: 500;
+  font-family: ${({ theme }) => theme.fonts.primary};
+`;
+
+export const Image = styled.image`
+  width: 100px;
+  height: 100px;
+  background-color: lightgrey;
 `;

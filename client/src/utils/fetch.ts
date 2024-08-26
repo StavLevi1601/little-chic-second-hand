@@ -31,7 +31,9 @@ export const fetch = async (data: ItemSchema) => {
 
 export const fetchGetItem = async () => {
   try {
+    console.log("ddddddddd");
     const token = localStorage.getItem("token");
+    console.log(token);
 
     const result = await axios.get(`${import.meta.env.VITE_BACKEND_URL}items`, {
       headers: {

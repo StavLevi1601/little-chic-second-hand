@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import {
   Container,
   Modal,
@@ -20,17 +20,10 @@ type Props = {
 };
 
 export default function ModalAddItem({ isOpen, onClose }: Props) {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState("");
-  // const [sku, setSku] = useState("");
-  // const [quantity, setQuantity] = useState(1);
-
-  const { register, reset, handleSubmit } = useForm<ItemSchema>();
+  const { register, reset, handleSubmit, setValue, getValues } =
+    useForm<ItemSchema>();
 
   const onSubmit = async (data: ItemSchema) => {
-    console.log(price);
-
     console.log("Item Added:", data);
     const result = await fetch(data);
     console.log("Result:", result);
@@ -39,13 +32,29 @@ export default function ModalAddItem({ isOpen, onClose }: Props) {
     reset();
   };
 
+  useEffect(() => {
+    if (isOpen) {
+      reset({ imageUrl: "" });
+    }
+  }, [isOpen, reset]);
+
   const handleContainerClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
       onClose();
+      reset();
     }
   };
 
   if (!isOpen) return null;
+
+  const handleShowImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      console.log("Image URL:", URL.createObjectURL(file));
+      const imageUrl = URL.createObjectURL(file);
+      setValue("imageUrl", imageUrl);
+    }
+  };
 
   return (
     <Container onClick={handleContainerClick}>
@@ -62,25 +71,14 @@ export default function ModalAddItem({ isOpen, onClose }: Props) {
               paddingRight: "20px",
             }}
           >
-            <Title style={{ marginBottom: "20px", fontSize: "24px" }}>
-              Add Item
-            </Title>
+            <Title>Add Item</Title>
 
-            <Label htmlFor="title" style={{ marginBottom: "10px" }}>
-              Title
-            </Label>
+            <Label htmlFor="title">Title</Label>
             <Input
               id="title"
               type="text"
-              value={title}
-              {...register("title")}
-              onChange={(e) => setTitle(e.target.value)}
+              {...register("title", { required: true })}
               required
-              style={{
-                marginBottom: "20px",
-                padding: "10px",
-                fontSize: "16px",
-              }}
             />
 
             <Label htmlFor="description" style={{ marginBottom: "10px" }}>
@@ -88,16 +86,8 @@ export default function ModalAddItem({ isOpen, onClose }: Props) {
             </Label>
             <TextArea
               id="description"
-              value={description}
-              {...register("body")}
-              onChange={(e) => setDescription(e.target.value)}
+              {...register("body", { required: true })}
               required
-              style={{
-                marginBottom: "20px",
-                padding: "10px",
-                fontSize: "16px",
-                height: "80px",
-              }}
             />
 
             <Label htmlFor="price" style={{ marginBottom: "10px" }}>
@@ -106,14 +96,8 @@ export default function ModalAddItem({ isOpen, onClose }: Props) {
             <Input
               id="price"
               type="number"
-              {...register("price")}
-              onChange={(e) => setPrice(e.target.value)}
+              {...register("price", { required: true })}
               required
-              style={{
-                marginBottom: "20px",
-                padding: "10px",
-                fontSize: "16px",
-              }}
             />
           </div>
 
@@ -126,29 +110,59 @@ export default function ModalAddItem({ isOpen, onClose }: Props) {
               paddingLeft: "20px",
             }}
           >
-            <Label htmlFor="image" style={{ marginBottom: "280px" }}></Label>
-            <ImageInput
-              id="image"
-              type="file"
-              accept="image/*"
-              style={{ marginBottom: "20px" }}
-            />
+            {getValues("imageUrl") ? (
+              <img
+                src={getValues("imageUrl")}
+                alt="Selected"
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "150px",
+                  height: "auto", // ודא שהגובה מוגדר אוטומטית
+                  position: "relative", // שנה ל-relative אם הבעיה נובעת מהמיקום
+                  backgroundColor: "lightgrey",
+                }}
+              />
+            ) : (
+              <ImageInput
+                id="image"
+                {...register("imageUrl", { required: true })}
+                type="file"
+                accept="image/*"
+                style={{
+                  marginBottom: "20px",
+                  position: "relative",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginTop: "170px",
+                  marginLeft: "170px",
+                }}
+                onChange={handleShowImage}
+              />
+            )}
 
-            <Button
-              type="submit"
-              style={{
-                marginTop: "auto",
-                padding: "10px 20px",
-                fontSize: "16px",
-                backgroundColor: "#007bff",
-                color: "#fff",
-                border: "none",
-                borderRadius: "4px",
-                cursor: "pointer",
-              }}
-            >
-              Add Item
-            </Button>
+            {/* {!getValues("imageUrl") ? (
+              <ImageInput
+                id="image"
+                {...register("imageUrl", { required: true })}
+                type="file"
+                accept="image/*"
+                style={{
+                  marginBottom: "20px",
+                  position: "relative",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginTop: "170px",
+                  marginLeft: "170px",
+                }}
+                onChange={handleShowImage}
+              />
+            ) : (
+              ""
+            )} */}
+
+            <Button type="submit">Add Item</Button>
           </div>
         </Form>
       </Modal>
