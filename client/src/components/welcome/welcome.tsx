@@ -1,38 +1,27 @@
 import { useEffect, useState } from "react";
 import { Button, Container, Header, SearchingRow } from "./welcome.style";
 import ModalAddItem from "../items/modal-add-item";
-import background1 from "../../assets/images/background-child1.webp";
-import background2 from "../../assets/images/background-child2.webp";
-import background3 from "../../assets/images/background-child3.webp";
-import background4 from "../../assets/images/background-child4.jpg";
-import background5 from "../../assets/images/background-child5.jpg";
-import { ItemSchema } from "../../validations/itemSchema";
+
+import { ItemSchema, SortKey } from "../../validations/itemSchema";
 import { fetchGetItem } from "../../utils/fetch";
 import { usePagination } from "../../hooks/usePagination";
-
-const backgrounds = [
-  `url(${background1})`,
-  `url(${background2})`,
-  `url(${background3})`,
-  `url(${background3})`,
-  `url(${background4})`,
-  `url(${background5})`,
-];
+import { Backgrounds } from "../backgrounds/backgrounds";
+import { SortCollection } from "../sortCollection/sort-collection";
 
 function Welcome() {
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const [currentBackground, setCurrentBackground] = useState<number>(0);
-  const [items, setItem] = useState<ItemSchema[]>([]);
-  const { currentItems, nextPage, previousPage, currentPage, maxPages } =
+  const [items, setItems] = useState<ItemSchema[]>([]);
+  const [filterItems, setFilterItems] = useState<ItemSchema[]>([]);
+  const [sortType, setSortType] = useState<SortKey>("Title");
+  const [isShowItems, setIsShowItems] = useState<boolean>(false);
+
+  const { getCurrentItems, nextPage, previousPage, currentPage, maxPages } =
     usePagination<ItemSchema>({
-      items,
+      filterItems,
     });
 
   const showItems = async () => {
-    const { data } = await fetchGetItem();
-    console.log("data", data.data);
-
-    setItem(data.data);
+    setIsShowItems(true);
   };
 
   const openModalAddItem = () => {
@@ -43,17 +32,46 @@ function Welcome() {
     setIsOpenModal(false);
   };
 
+  const handleSortChange = (newSort: SortKey) => {
+    setSortType(newSort);
+  };
+
+  const sortItems = (items: ItemSchema[], sortKey: SortKey): ItemSchema[] => {
+    return [...items].sort((a, b) => {
+      switch (sortKey) {
+        case "Title":
+          return a.title.localeCompare(b.title, undefined, {
+            sensitivity: "base",
+          });
+        case "Body":
+          return a.body.localeCompare(b.body, undefined, {
+            sensitivity: "base",
+          });
+        case "Price":
+          return a.price - b.price;
+        case "Size":
+          return a.size.localeCompare(b.size, undefined, {
+            sensitivity: "base",
+          });
+        default:
+          return 0;
+      }
+    });
+  };
+
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentBackground((prevBackground) =>
-        prevBackground === backgrounds.length - 1 ? 0 : prevBackground + 1
-      );
-    }, 5000);
+    const fetchITems = async () => {
+      const { data } = await fetchGetItem();
+      setItems(data.data);
+    };
 
-    return () => clearInterval(interval);
-  });
+    fetchITems();
+  }, []);
 
-  console.log("itemsff", items);
+  useEffect(() => {
+    const sortedItems = sortItems(items, sortType);
+    setFilterItems(sortedItems);
+  }, [sortType, items]);
 
   return (
     <Container style={{ flexDirection: "column" }}>
@@ -66,16 +84,11 @@ function Welcome() {
           <Button onClick={openModalAddItem}>Add item</Button>
         </SearchingRow>
       </div>
-      <div
-        style={{
-          marginTop: "20px",
-          height: "400px",
-          backgroundImage: backgrounds[currentBackground], // שימוש ב-backgroundIma
-        }}
-      ></div>
+      <Backgrounds />
+
       <div>
-        The page is {currentPage} from {maxPages}
-        {items.length > 0 ? (
+        <SortCollection onSortChange={handleSortChange} />
+        {filterItems.length > 0 && isShowItems ? (
           <>
             <table>
               <thead>
@@ -87,7 +100,7 @@ function Welcome() {
                 </tr>
               </thead>
               <tbody>
-                {currentItems().map((item, key) => (
+                {getCurrentItems().map((item, key) => (
                   <tr key={key}>
                     <td>{item.title}</td>
                     <td>{item.body}</td>
@@ -100,6 +113,9 @@ function Welcome() {
             <div style={{ display: "flex", flexDirection: "row", gap: "20px" }}>
               <button onClick={previousPage}>Back</button>
               <button onClick={nextPage}>Next</button>
+            </div>
+            <div>
+              The page is {currentPage} from {maxPages}
             </div>
           </>
         ) : (

@@ -37,6 +37,7 @@ router.post("/", async (req, res) => {
     const itemId = uuid();
     const itemData = { ...validateData.data, itemId };
     const item = new Items(itemData);
+
     await item.save();
     return res.json({
       success: true,

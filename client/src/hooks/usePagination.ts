@@ -1,32 +1,37 @@
 import { useState } from "react";
 
 type Props<T> = {
-  items: T[];
+  filterItems: T[];
 };
 
-export function usePagination<T>({ items }: Props<T>) {
+const ITEM_PER_PAGE = 5;
+
+export function usePagination<T>({ filterItems }: Props<T>) {
   const [currentPage, setCurrentPages] = useState<number>(1);
-  const itemsPerPage = 5;
-  const maxPages = Math.ceil((items?.length || 0) / itemsPerPage);
+  const maxPages = Math.ceil((filterItems?.length || 0) / ITEM_PER_PAGE);
 
   const nextPage = () => {
-    setCurrentPages((prevPage: number) =>
-      prevPage < maxPages ? prevPage + 1 : prevPage
-    );
+    if (currentPage < maxPages) {
+      const page = currentPage + 1;
+      setCurrentPages(page);
+    }
   };
 
   const previousPage = () => {
-    setCurrentPages((prevPage: number) => (prevPage > 1 ? prevPage - 1 : 1));
+    if (currentPage > 1) {
+      const page = currentPage - 1;
+      setCurrentPages(page);
+    }
   };
 
-  const currentItems = () => {
-    if (!items || items.length === 0) {
+  const getCurrentItems = () => {
+    if (!filterItems || filterItems.length === 0) {
       return [];
     }
-    const begin = (currentPage - 1) * itemsPerPage;
-    const end = begin + itemsPerPage;
-    return items.slice(begin, end);
+    const begin = (currentPage - 1) * ITEM_PER_PAGE;
+    const end = begin + ITEM_PER_PAGE;
+    return filterItems.slice(begin, end);
   };
 
-  return { nextPage, previousPage, currentItems, currentPage, maxPages };
+  return { nextPage, previousPage, getCurrentItems, currentPage, maxPages };
 }
