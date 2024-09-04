@@ -7,7 +7,7 @@ import { fetchGetItem } from "../../utils/fetch";
 import { Backgrounds } from "../backgrounds/backgrounds";
 import { SortCollection } from "../sortCollection/sort-collection";
 import { ExpansionTable } from "../table/expansion-table";
-import { useSorting } from "../../hooks/useSorting";
+// import { useSorting } from "../../hooks/useSorting";
 
 const sortItems = (items: ItemSchema[], sortKey: SortKey): ItemSchema[] => {
   return [...items].sort((a, b) => {
