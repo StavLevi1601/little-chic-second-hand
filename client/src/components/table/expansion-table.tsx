@@ -3,13 +3,18 @@ import { ItemSchema } from "../../validations/itemSchema";
 
 type Props = {
   items: ItemSchema[];
+  isShowItems: boolean;
 };
 
-export function ExpansionTable({ items }: Props) {
+export function ExpansionTable({ items, isShowItems }: Props) {
   const { getCurrentItems, nextPage, previousPage, currentPage, maxPages } =
     usePagination<ItemSchema>({
       filterItems: items,
     });
+
+  if (items.length === 0 && !isShowItems) {
+    return null;
+  }
 
   return (
     <table>

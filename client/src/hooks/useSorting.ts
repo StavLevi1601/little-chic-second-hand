@@ -6,7 +6,7 @@ export function useSorting() {
 
   const sortItems = useMemo(
     () =>
-      (items: ItemSchema[]): ItemSchema[] => {
+      (items: ItemSchema[], sortType: SortKey): ItemSchema[] => {
         return [...items].sort((a, b) => {
           switch (sortType) {
             case "Title":
