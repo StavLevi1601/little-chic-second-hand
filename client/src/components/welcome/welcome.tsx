@@ -22,6 +22,8 @@ function Welcome() {
 
   const showItems = async () => {
     setIsShowItems(true);
+    const sortedItems = sortItems(items, sortType);
+    setFilterItems(sortedItems);
   };
 
   const openModalAddItem = () => {
@@ -34,6 +36,8 @@ function Welcome() {
 
   const handleSortChange = (newSort: SortKey) => {
     setSortType(newSort);
+    const sortedItems = sortItems(items, sortType);
+    setFilterItems(sortedItems);
   };
 
   const sortItems = (items: ItemSchema[], sortKey: SortKey): ItemSchema[] => {
