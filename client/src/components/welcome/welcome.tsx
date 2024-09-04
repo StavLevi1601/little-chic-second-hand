@@ -37,6 +37,7 @@ function Welcome() {
   const handleSortChange = (newSort: SortKey) => {
     setSortType(newSort);
     const sortedItems = sortItems(items, sortType);
+    ///
     setFilterItems(sortedItems);
   };
 
