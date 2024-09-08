@@ -5,6 +5,7 @@ export const Container = styled.div`
   margin: 0 auto;
   justify-content: center;
   padding-top: 60px;
+  flex-direction: "column";
 `;
 
 export const Header = styled.div`

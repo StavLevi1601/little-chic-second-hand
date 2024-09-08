@@ -39,9 +39,31 @@ export const fetchGetItem = async () => {
         Authorization: `Bearer ${token}`,
       },
     });
+
     return result;
   } catch (e) {
     console.error("Error getting items:", e);
     throw e;
+  }
+};
+
+export const fetchCollection = async () => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const result = await axios.get(
+      `${import.meta.env.VITE_BACKEND_URL}items/images`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log("Response:", result.data);
+    return result.data;
+  } catch (error) {
+    console.error("Error fetching images:", error);
+    throw error;
   }
 };

@@ -1,35 +1,25 @@
-import { useMemo, useState } from "react";
-import { ItemSchema, SortKey } from "../validations/itemSchema";
+import { useCallback } from "react";
 
-export function useSorting() {
-  const [sortType, setSortType] = useState<SortKey>("Title");
+type SortConfig<T> = {
+  items: T[];
+  sortType: keyof T;
+};
 
-  const sortItems = useMemo(
-    () =>
-      (items: ItemSchema[], sortType: SortKey): ItemSchema[] => {
-        return [...items].sort((a, b) => {
-          switch (sortType) {
-            case "Title":
-              return a.title.localeCompare(b.title, undefined, {
-                sensitivity: "base",
-              });
-            case "Body":
-              return a.body.localeCompare(b.body, undefined, {
-                sensitivity: "base",
-              });
-            case "Price":
-              return a.price - b.price;
-            case "Size":
-              return a.size.localeCompare(b.size, undefined, {
-                sensitivity: "base",
-              });
-            default:
-              return 0;
-          }
-        });
-      },
-    [sortType]
-  );
+export function useSorting<T extends object>({
+  items,
+  sortType,
+}: SortConfig<T>) {
+  const sortItems = useCallback((): T[] => {
+    return [...items].sort((item1, item2) => {
+      if (item1[sortType] < item2[sortType]) {
+        return -1;
+      }
+      if (item1[sortType] > item2[sortType]) {
+        return 1;
+      }
+      return 0;
+    });
+  }, [sortType, items]);
 
-  return { sortType, setSortType, sortItems };
+  return { sortType, sortItems };
 }

@@ -1,9 +1,30 @@
 import express from "express";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { Items } from "../Models/items.js";
 import { itemSchema } from "../validations/items.js";
-import { uuid } from "uuidv4";
+import { v4 as uuidv4 } from "uuid";
+import { getAllCollectionImages } from "../aws/s3.js";
 
 const router = express.Router();
+
+router.get("/images", async (req, res) => {
+  try {
+    const imageUrlsPromises = getAllCollectionImages();
+
+    const imageUrls = await Promise.all(imageUrlsPromises);
+
+    return res.json({
+      success: true,
+      data: imageUrls,
+    });
+  } catch (error) {
+    console.error("Error in fetching images:", error);
+    return res.status(500).json({
+      success: false,
+      error: "Failed to fetch images",
+    });
+  }
+});
 
 router.get("/", async (req, res) => {
   try {
@@ -15,7 +36,7 @@ router.get("/", async (req, res) => {
       data: data,
     });
   } catch (e) {
-    res.json({
+    return res.status(500).json({
       success: false,
       error: e.message,
     });
@@ -24,17 +45,17 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const data = req.body; // אין צורך ב-json()
+    const data = req.body;
     console.log(data);
     const validateData = itemSchema.safeParse(data);
     if (!validateData.success) {
-      return res.status(500).json({
+      return res.status(400).json({
         message: validateData.error.message,
         status: false,
       });
     }
 
-    const itemId = uuid();
+    const itemId = uuidv4();
     const itemData = { ...validateData.data, itemId };
     const item = new Items(itemData);
 
@@ -44,7 +65,7 @@ router.post("/", async (req, res) => {
       item,
     });
   } catch (e) {
-    res.json({
+    return res.status(500).json({
       success: false,
       error: e.message,
     });
@@ -66,7 +87,7 @@ router.get("/:itemId", async (req, res) => {
       item,
     });
   } catch (e) {
-    res.json({
+    return res.status(500).json({
       success: false,
       error: e.message,
     });
@@ -76,10 +97,10 @@ router.get("/:itemId", async (req, res) => {
 router.put("/:itemId", async (req, res) => {
   try {
     const { itemId } = req.params;
-    const data = await req.body.json();
+    const data = req.body;
     const validateData = itemSchema.safeParse(data);
     if (!validateData.success) {
-      return res.status(500).json({
+      return res.status(400).json({
         message: validateData.error.message,
         status: false,
       });
@@ -99,7 +120,7 @@ router.put("/:itemId", async (req, res) => {
       item,
     });
   } catch (e) {
-    res.json({
+    return res.status(500).json({
       success: false,
       error: e.message,
     });
@@ -121,7 +142,7 @@ router.delete("/:itemId", async (req, res) => {
       item,
     });
   } catch (e) {
-    res.json({
+    return res.status(500).json({
       success: false,
       error: e.message,
     });
@@ -129,5 +150,3 @@ router.delete("/:itemId", async (req, res) => {
 });
 
 export default router;
-
-//TODO: send a new generate id , adding redirect to a spesific item

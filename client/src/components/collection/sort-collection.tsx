@@ -1,27 +1,29 @@
 import React from "react";
-import { Select } from "./sort.style";
+import { Select } from "./sort-collection.style";
 import { SortKey } from "../../validations/itemSchema";
-import { useSorting } from "../../hooks/useSorting";
 
-const sortBy = ["Title", "Body", "Price", "Size"] as const;
+// const sortBy = ["Title", "Body", "Price", "Size"] as const;
 
 type Props = {
   onSortChange: (newSort: SortKey) => void;
+  sortTypesOption: string[];
+  selected: string;
 };
 
-export function SortCollection({ onSortChange }: Props) {
-  const { sortType, setSortType } = useSorting();
-
+export function SortCollection({
+  onSortChange,
+  sortTypesOption,
+  selected,
+}: Props) {
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newSort = e.target.value as SortKey;
-    setSortType(newSort);
     onSortChange(newSort);
   };
 
   return (
     <div style={{ width: "200px" }}>
-      <Select value={sortType} onChange={handleSortChange}>
-        {sortBy.map((option) => (
+      <Select value={selected} onChange={handleSortChange}>
+        {sortTypesOption.map((option) => (
           <option key={option} value={option}>
             {option}
           </option>

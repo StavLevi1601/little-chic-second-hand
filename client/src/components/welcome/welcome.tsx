@@ -2,43 +2,36 @@ import { useEffect, useMemo, useState } from "react";
 import { Button, Container, Header, SearchingRow } from "./welcome.style";
 import ModalAddItem from "../items/modal-add-item";
 
-import { ItemSchema, SortKey } from "../../validations/itemSchema";
+import { ItemSchema, SortKey, itemSchema } from "../../validations/itemSchema";
 import { fetchGetItem } from "../../utils/fetch";
 import { Backgrounds } from "../backgrounds/backgrounds";
-import { SortCollection } from "../sortCollection/sort-collection";
-import { ExpansionTable } from "../table/expansion-table";
-// import { useSorting } from "../../hooks/useSorting";
+import { SortCollection } from "../collection/sort-collection";
+import { GetCollection } from "../collection/get-collection";
 
-const sortItems = (items: ItemSchema[], sortKey: SortKey): ItemSchema[] => {
-  return [...items].sort((a, b) => {
-    switch (sortKey) {
-      case "Title":
-        return a.title.localeCompare(b.title, undefined, {
-          sensitivity: "base",
-        });
-      case "Body":
-        return a.body.localeCompare(b.body, undefined, {
-          sensitivity: "base",
-        });
-      case "Price":
-        return a.price - b.price;
-      case "Size":
-        return a.size.localeCompare(b.size, undefined, {
-          sensitivity: "base",
-        });
-      default:
-        return 0;
-    }
-  });
-};
+const sortKeys = Object.keys(itemSchema.shape) as unknown as Array<
+  keyof ItemSchema
+>;
 
 function Welcome() {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [items, setItems] = useState<ItemSchema[]>([]);
-  const [sortType, setSortType] = useState<SortKey>("Title");
+
+  const [sortType, setSortType] = useState<SortKey>(sortKeys[0]);
   const [isShowItems, setIsShowItems] = useState<boolean>(false);
 
-  // const {sortType,setSortType,sortItems} = useSorting();
+  const filteredItems = useMemo(
+    () =>
+      [...items].sort((item1, item2) => {
+        if (item1[sortType] < item2[sortType]) {
+          return -1;
+        }
+        if (item1[sortType] > item2[sortType]) {
+          return 1;
+        }
+        return 0;
+      }),
+    [items, sortType]
+  );
 
   useEffect(() => {
     const fetchITems = async () => {
@@ -48,11 +41,6 @@ function Welcome() {
 
     fetchITems();
   }, []);
-
-  const filteredItems = useMemo(
-    () => sortItems(items, sortType),
-    [items, sortType]
-  );
 
   const showItems = async () => {
     setIsShowItems(true);
@@ -82,11 +70,18 @@ function Welcome() {
         </SearchingRow>
       </div>
       <Backgrounds />
-
-      <div>
-        <SortCollection onSortChange={handleSortChange} />
-        <ExpansionTable items={filteredItems} isShowItems={isShowItems} />
-      </div>
+      {isShowItems ? (
+        <div>
+          <SortCollection
+            onSortChange={handleSortChange}
+            selected={sortType}
+            sortTypesOption={sortKeys}
+          />
+          <GetCollection items={filteredItems} isShowItems={isShowItems} />
+        </div>
+      ) : (
+        ""
+      )}
       <ModalAddItem isOpen={isOpenModal} onClose={closeModalAddItem} />
     </Container>
   );

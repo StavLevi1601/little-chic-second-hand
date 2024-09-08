@@ -10,4 +10,4 @@ export const itemSchema = z.object({
 
 export type ItemSchema = z.infer<typeof itemSchema>;
 
-export type SortKey = "Title" | "Body" | "Price" | "Size";
+export type SortKey = keyof ItemSchema;
