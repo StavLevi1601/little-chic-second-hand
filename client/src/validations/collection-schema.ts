@@ -14,15 +14,8 @@ export const itemSchema = z.object({
   color: z.string(),
   size: z.string(),
   status: z.string(),
-  image: z.string().optional(),
 });
 
 export type ItemSchema = z.infer<typeof itemSchema>;
 
 export type SortKey = keyof ItemSchema;
-
-export const itemSchemaFilter = itemSchema.omit({
-  name: true,
-  image: true,
-  description: true,
-});

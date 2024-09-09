@@ -13,6 +13,7 @@ export const Header = styled.div`
   margin-bottom: 5px;
   text-align: center;
   font-size: 60px;
+  font-weight: 600;
 `;
 
 export const SearchingRow = styled.div`
