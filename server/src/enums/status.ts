@@ -1,1 +1,1 @@
-export const status = ["available", "sold"];
+export const status = ["available", "not available"];

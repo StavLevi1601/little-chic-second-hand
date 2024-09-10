@@ -46,15 +46,16 @@ router.get("/", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const data = req.body;
-    console.log(data);
+    data.status = "available";
     const validateData = itemSchema.safeParse(data);
+    console.log("validateDatavalidateData", validateData.error?.message);
     if (!validateData.success) {
       return res.status(400).json({
         message: validateData.error.message,
         status: false,
       });
     }
-
+    console.log("validateData", validateData);
     const itemId = uuidv4();
     const itemData = { ...validateData.data, itemId };
     const item = new Items(itemData);

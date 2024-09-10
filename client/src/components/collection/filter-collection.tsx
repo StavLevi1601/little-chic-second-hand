@@ -1,5 +1,6 @@
-import { itemSchemaFilter } from "../../validations/itemSchema";
+import { itemsSchemaFilterKeys } from "../../validations/itemSchema";
 import {
+  FilterButton,
   FilterContainer,
   FilterItem,
   FilterText,
@@ -7,22 +8,18 @@ import {
 import { Accordion } from "../accordion/accordion";
 import { DividerWithText } from "../login/login.style";
 
-const itemsSchemaFilter = Object.keys(itemSchemaFilter.shape) as Array<
-  keyof typeof itemSchemaFilter.shape
->;
-
 export function FilterCollection() {
   return (
     <FilterContainer>
       <FilterText>Filter by</FilterText>
       <DividerWithText />
 
-      {itemsSchemaFilter.map((title, index) => (
+      {itemsSchemaFilterKeys.map((title, index) => (
         <FilterItem key={index}>
           <Accordion title={title} />
         </FilterItem>
       ))}
-      <button>Filter</button>
+      <FilterButton>Filter</FilterButton>
     </FilterContainer>
   );
 }

@@ -11,5 +11,5 @@ export const DataCollection = styled.div`
 
 export const CollectionText = styled.div`
   font-family: ${({ theme }) => theme.fonts.secondary};
-  font-size: 19px;
+  font-size: 15px;
 `;

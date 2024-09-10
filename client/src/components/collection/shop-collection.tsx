@@ -6,8 +6,17 @@ import {
   CollectionImage,
   CollectionSubContainer,
 } from "./shop-collection.style";
+import { SortCollection } from "./sort-collection";
+import { SortKey, itemsSchemaFilterKeys } from "../../validations/itemSchema";
+import { useState } from "react";
 
 export function ShopCollection() {
+  const [sortType, setSortType] = useState<SortKey>(itemsSchemaFilterKeys[0]);
+
+  const handleSortChange = (newSort: SortKey) => {
+    setSortType(newSort);
+  };
+
   return (
     <div style={{ display: "flex", flexDirection: "row" }}>
       <FilterCollection />
@@ -26,6 +35,11 @@ export function ShopCollection() {
           </CollectionDetails>
         ))}
       </CollectionSubContainer>
+      <SortCollection
+        onSortChange={handleSortChange}
+        selected={sortType}
+        sortTypesOption={itemsSchemaFilterKeys}
+      />
     </div>
   );
 }

@@ -3,15 +3,15 @@ import { uuid } from "uuidv4";
 
 export const Items = mongoose.model("Items", {
   id: { type: String, require: true, default: uuid() },
-  title: String,
-  body: String,
-  buyer_id: String,
-  seller_id: String,
+  name: String,
+  type: String,
+  description: String,
   price: Number,
+  color: String,
   size: String,
   status: {
     type: String,
-    enum: ["available", "sold"],
+    enum: ["available", "not available"],
     default: "available",
   },
   created_at: {

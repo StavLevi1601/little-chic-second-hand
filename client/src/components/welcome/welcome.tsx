@@ -3,6 +3,7 @@ import { Button, Container, Header, SearchingRow } from "./welcome.style";
 import ModalAddItem from "../items/modal-add-item";
 import { AnimationBackgrounds } from "../backgrounds/backgrounds";
 import { ShopCollection } from "../collection/shop-collection";
+import { DividerWithText } from "../login/login.style";
 
 // const sortKeys = Object.keys(itemSchema.shape) as unknown as Array<
 //   keyof ItemSchema
@@ -63,7 +64,9 @@ function Welcome() {
           <Button onClick={() => setIsShowItems(false)}>Our Story</Button>
           <Button>Gift Card</Button>
           <Button onClick={openModalAddItem}>Add item</Button>
+          <Button onClick={() => console.log("gdf")}>My items</Button>
         </SearchingRow>
+        {isShowItems && <DividerWithText />}
       </div>
       {!isShowItems && <AnimationBackgrounds isShowItems={isShowItems} />}
       {isShowItems && <ShopCollection />}

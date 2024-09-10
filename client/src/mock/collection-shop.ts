@@ -14,7 +14,7 @@ import image11 from "../assets/images/collections/image11.webp";
 export const collections = [
   {
     name: "Colorful Splatter T-Shirt",
-    collectionType: "T-Shirt",
+    type: "T-Shirt",
     description: "A colorful splatter t-shirt for your everyday wear.",
     price: 20,
     color: "Multicolor",
@@ -24,7 +24,7 @@ export const collections = [
   },
   {
     name: "Blue Abstract Print Tee",
-    collectionType: "T-Shirt",
+    type: "T-Shirt",
     description: "A blue abstract print tee for your everyday wear.",
     price: 40,
     color: "Blue",
@@ -34,7 +34,7 @@ export const collections = [
   },
   {
     name: "Blue Brushstroke Onesie",
-    collectionType: "Onesie",
+    type: "Onesie",
     description: "A blue brushstroke onesie for your everyday wear.",
     price: 20,
     color: "Blue",
@@ -44,7 +44,7 @@ export const collections = [
   },
   {
     name: "Sage Green Basic Tee",
-    collectionType: "T-Shirt",
+    type: "T-Shirt",
     description: "A sage green basic tee for your everyday wear.",
     price: 20,
     color: "Green",
@@ -54,7 +54,7 @@ export const collections = [
   },
   {
     name: "Checkered Pattern T-Shirt",
-    collectionType: "T-Shirt",
+    type: "T-Shirt",
     description: "A checkered pattern t-shirt for your everyday wear.",
     price: 25,
     color: "Black",
@@ -64,7 +64,7 @@ export const collections = [
   },
   {
     name: "Navy Grid Onesie",
-    collectionType: "Onesie",
+    type: "Onesie",
     description: "A navy grid onesie for your everyday wear.",
     price: 20,
     color: "Navy",
@@ -74,7 +74,7 @@ export const collections = [
   },
   {
     name: "Dotted White Onesie",
-    collectionType: "Onesie",
+    type: "Onesie",
     description: "A dotted white onesie for your everyday wear.",
     price: 20,
     color: "White",
@@ -84,7 +84,7 @@ export const collections = [
   },
   {
     name: "Navy Leaf Print Onesie",
-    collectionType: "Onesie",
+    type: "Onesie",
     description: "A navy leaf print onesie for your everyday wear.",
     price: 20,
     color: "Navy",
@@ -94,7 +94,7 @@ export const collections = [
   },
   {
     name: "Peach Sprinkle T-Shirt",
-    collectionType: "T-Shirt",
+    type: "T-Shirt",
     description: "A peach sprinkle t-shirt for your everyday wear.",
     price: 20,
     color: "Peach",
@@ -104,7 +104,7 @@ export const collections = [
   },
   {
     name: "Multicolor Scribble Onesie",
-    collectionType: "Onesie",
+    type: "Onesie",
     description: "A multicolor scribble onesie for your everyday wear.",
     price: 20,
     color: "Multicolor",
@@ -114,7 +114,7 @@ export const collections = [
   },
   {
     name: "Orange Striped T-Shirt",
-    collectionType: "T-Shirt",
+    type: "T-Shirt",
     description: "An orange striped t-shirt for your everyday wear.",
     price: 20,
     color: "Orange",

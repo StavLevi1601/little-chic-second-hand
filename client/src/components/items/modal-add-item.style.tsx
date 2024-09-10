@@ -20,7 +20,7 @@ export const Modal = styled.div`
   align-items: center;
   padding: 20px;
   width: 940px;
-  height: 450px;
+  max-height: 900px;
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);

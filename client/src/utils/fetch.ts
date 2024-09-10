@@ -3,11 +3,11 @@ import { ItemSchema } from "../validations/itemSchema";
 
 export const fetch = async (data: ItemSchema) => {
   try {
+    console.log("Data:", data);
+
     const token = localStorage.getItem("token"); // קבלת הטוקן מה-LocalStorage
     console.log(`${import.meta.env.VITE_BACKEND_URL}items`);
-    // i want to add status ans size to data
-    data.status = "available";
-    data.size = "M";
+
     data.price = parseInt(data.price.toString());
     const result = await axios.post(
       `${import.meta.env.VITE_BACKEND_URL}items`,

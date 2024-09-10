@@ -11,7 +11,7 @@ import {
   Button,
 } from "./modal-add-item.style";
 import { useForm } from "react-hook-form";
-import { ItemSchema } from "../../validations/itemSchema";
+import { ItemSchema, itemsSchemaKeys } from "../../validations/itemSchema";
 import { fetch } from "../../utils/fetch";
 
 type Props = {
@@ -20,23 +20,18 @@ type Props = {
 };
 
 export default function ModalAddItem({ isOpen, onClose }: Props) {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState("");
-  // const [sku, setSku] = useState("");
-  // const [quantity, setQuantity] = useState(1);
-
   const { register, reset, handleSubmit } = useForm<ItemSchema>();
 
   const onSubmit = async (data: ItemSchema) => {
-    console.log(price);
-
-    console.log("Item Added:", data);
-    const result = await fetch(data);
-    console.log("Result:", result);
-
-    onClose();
-    reset();
+    try {
+      const result = await fetch(data);
+      console.log(result);
+      onClose();
+      reset();
+    } catch (e) {
+      console.error("Error adding item:", e);
+      throw e;
+    }
   };
 
   const handleContainerClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -66,55 +61,54 @@ export default function ModalAddItem({ isOpen, onClose }: Props) {
               Add Item
             </Title>
 
-            <Label htmlFor="title" style={{ marginBottom: "10px" }}>
-              Title
-            </Label>
-            <Input
-              id="title"
-              type="text"
-              value={title}
-              {...register("title")}
-              onChange={(e) => setTitle(e.target.value)}
-              required
-              style={{
-                marginBottom: "20px",
-                padding: "10px",
-                fontSize: "16px",
-              }}
-            />
-
-            <Label htmlFor="description" style={{ marginBottom: "10px" }}>
-              Description
-            </Label>
-            <TextArea
-              id="description"
-              value={description}
-              {...register("body")}
-              onChange={(e) => setDescription(e.target.value)}
-              required
-              style={{
-                marginBottom: "20px",
-                padding: "10px",
-                fontSize: "16px",
-                height: "80px",
-              }}
-            />
-
-            <Label htmlFor="price" style={{ marginBottom: "10px" }}>
-              Price
-            </Label>
-            <Input
-              id="price"
-              type="number"
-              {...register("price")}
-              onChange={(e) => setPrice(e.target.value)}
-              required
-              style={{
-                marginBottom: "20px",
-                padding: "10px",
-                fontSize: "16px",
-              }}
-            />
+            {itemsSchemaKeys.map((key) => (
+              <div
+                key={key}
+                style={{
+                  display: "flex",
+                  justifyContent: "space-around",
+                }}
+              >
+                <Label htmlFor={key} style={{ marginTop: "40px" }}>
+                  {key}
+                </Label>
+                {key === "description" ? (
+                  <TextArea
+                    id={key}
+                    value={description}
+                    {...register(key)}
+                    onChange={(e) => setDescription(e.target.value)}
+                    required
+                    // style={{ width: "%" }}
+                  />
+                ) : key === "price" ? (
+                  <Input
+                    id={key}
+                    type="number"
+                    {...register(key)}
+                    onChange={(e) => setPrice(e.target.value)}
+                    required
+                    style={{
+                      marginBottom: "20px",
+                      padding: "10px",
+                      fontSize: "16px",
+                    }}
+                  />
+                ) : (
+                  <Input
+                    id={key}
+                    type="text"
+                    {...register(key)}
+                    required
+                    style={{
+                      marginBottom: "20px",
+                      padding: "10px",
+                      fontSize: "16px",
+                    }}
+                  />
+                )}
+              </div>
+            ))}
           </div>
 
           <div
