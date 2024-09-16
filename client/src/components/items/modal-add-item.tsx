@@ -17,15 +17,25 @@ import { fetch } from "../../utils/fetch";
 type Props = {
   isOpen: boolean;
   onClose: () => void;
+  updaeAddingItem: (item: ItemSchema) => void;
 };
 
-export default function ModalAddItem({ isOpen, onClose }: Props) {
+export default function ModalAddItem({
+  isOpen,
+  onClose,
+  updaeAddingItem,
+}: Props) {
   const { register, reset, handleSubmit } = useForm<ItemSchema>();
+  const [description, setDescription] = useState<string>("");
+  const [price, setPrice] = useState<number>(0);
+
+  console.log(price);
 
   const onSubmit = async (data: ItemSchema) => {
     try {
       const result = await fetch(data);
-      console.log(result);
+      console.log(result.data.item);
+      updaeAddingItem(result.data.item);
       onClose();
       reset();
     } catch (e) {
@@ -79,14 +89,13 @@ export default function ModalAddItem({ isOpen, onClose }: Props) {
                     {...register(key)}
                     onChange={(e) => setDescription(e.target.value)}
                     required
-                    // style={{ width: "%" }}
                   />
                 ) : key === "price" ? (
                   <Input
                     id={key}
                     type="number"
                     {...register(key)}
-                    onChange={(e) => setPrice(e.target.value)}
+                    onChange={(e) => setPrice(Number(e.target.value))}
                     required
                     style={{
                       marginBottom: "20px",

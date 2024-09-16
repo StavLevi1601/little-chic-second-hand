@@ -1,46 +1,65 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button, Container, Header, SearchingRow } from "./welcome.style";
 import ModalAddItem from "../items/modal-add-item";
 import { AnimationBackgrounds } from "../backgrounds/backgrounds";
 import { ShopCollection } from "../collection/shop-collection";
 import { DividerWithText } from "../login/login.style";
+import { ItemSchema, SortKey, itemSchema } from "../../validations/itemSchema";
+import { fetchGetItem } from "../../utils/fetch";
+import { collections } from "../../mock/collection-shop";
 
-// const sortKeys = Object.keys(itemSchema.shape) as unknown as Array<
-//   keyof ItemSchema
-// >;
+const sortKeys = Object.keys(itemSchema.shape) as unknown as Array<
+  keyof ItemSchema
+>;
 
 function Welcome() {
   const [isOpenModal, setIsOpenModal] = useState(false);
-  // const [items, setItems] = useState<ItemSchema[]>([]);
 
-  // const [sortType, setSortType] = useState<SortKey>(sortKeys[0]);
+  const [sortType, setSortType] = useState<SortKey>(sortKeys[0]);
   const [isShowItems, setIsShowItems] = useState<boolean>(false);
+  const [collectionsShop, setCollectionsShop] =
+    useState<ItemSchema[]>(collections);
 
-  // const filteredItems = useMemo(
-  //   () =>
-  //     [...items].sort((item1, item2) => {
-  //       if (item1[sortType] < item2[sortType]) {
-  //         return -1;
-  //       }
-  //       if (item1[sortType] > item2[sortType]) {
-  //         return 1;
-  //       }
-  //       return 0;
-  //     }),
-  //   [items, sortType]
-  // );
+  const filteredItems = useMemo(
+    () =>
+      [...collectionsShop].sort((item1, item2) => {
+        if (item1[sortType]! < item2[sortType]!) {
+          return -1;
+        }
+        if (item1[sortType]! > item2[sortType]!) {
+          return 1;
+        }
+        return 0;
+      }),
 
-  // useEffect(() => {
-  //   const fetchITems = async () => {
-  //     const { data } = await fetchGetItem();
-  //     setItems(data.data);
-  //   };
+    [collectionsShop, sortType]
+  );
 
-  //   fetchITems();
-  // }, []);
+  console.log("filteredItems", filteredItems);
+
+  useEffect(() => {
+    const fetchITems = async () => {
+      const { data } = await fetchGetItem();
+
+      setCollectionsShop((prevCollections) => {
+        const newItems = data.data.filter((newItem: ItemSchema) => {
+          if ("id" in newItem) {
+            return !prevCollections.some(
+              (existingItem) =>
+                "id" in existingItem && existingItem.id === newItem.id
+            );
+          }
+        });
+        return [...prevCollections, ...newItems];
+      });
+    };
+
+    fetchITems();
+  }, []);
 
   const showItems = async () => {
     setIsShowItems(true);
+    addItemsToCollections();
   };
 
   const openModalAddItem = () => {
@@ -51,9 +70,27 @@ function Welcome() {
     setIsOpenModal(false);
   };
 
-  // const handleSortChange = (newSort: SortKey) => {
-  //   setSortType(newSort);
-  // };
+  const handleUpdateAddingItem = (item: ItemSchema) => {
+    console.log("update", item);
+    setCollectionsShop((prevCollections) => {
+      return [...prevCollections, item];
+    });
+    console.log("collectionsShop", collectionsShop);
+  };
+
+  const addItemsToCollections = () => {
+    setCollectionsShop((prevCollections) => {
+      const newItems = filteredItems.filter((newItem) => {
+        if ("id" in newItem) {
+          return !prevCollections.some(
+            (existingItem) =>
+              "id" in existingItem && existingItem.id === newItem.id
+          );
+        }
+      });
+      return [...prevCollections, ...newItems];
+    });
+  };
 
   return (
     <Container style={{ flexDirection: "column" }}>
@@ -68,8 +105,11 @@ function Welcome() {
         </SearchingRow>
         {isShowItems && <DividerWithText />}
       </div>
-      {!isShowItems && <AnimationBackgrounds isShowItems={isShowItems} />}
-      {isShowItems && <ShopCollection />}
+      {!isShowItems ? (
+        <AnimationBackgrounds isShowItems={isShowItems} />
+      ) : (
+        <ShopCollection collectionsShop={filteredItems} />
+      )}
       {/* {isShowItems ? (
         <div>
           <SortCollection
@@ -82,7 +122,11 @@ function Welcome() {
       ) : (
         ""
       )} */}
-      <ModalAddItem isOpen={isOpenModal} onClose={closeModalAddItem} />
+      <ModalAddItem
+        isOpen={isOpenModal}
+        onClose={closeModalAddItem}
+        updaeAddingItem={handleUpdateAddingItem}
+      />
     </Container>
   );
 }

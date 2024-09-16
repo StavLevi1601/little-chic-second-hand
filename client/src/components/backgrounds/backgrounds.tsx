@@ -37,8 +37,10 @@ export function AnimationBackgrounds({ isShowItems }: Props) {
     <div
       style={{
         marginTop: "20px",
-        height: "400px",
+        height: "651px",
         backgroundImage: backgrounds[currentBackground],
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
       }}
     ></div>
   );

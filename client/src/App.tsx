@@ -14,6 +14,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           {isAuthenticated ? <Route path="/" element={<Welcome />} /> : null}
+          {/* <Route path="/items/:itemId" element={<ItemPage />} /> */}
         </Routes>
       </Router>
     </>
