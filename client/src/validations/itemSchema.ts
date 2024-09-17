@@ -20,9 +20,17 @@ export const itemSchema = z.object({
 
 export type ItemSchema = z.infer<typeof itemSchema>;
 
+export const itemSchemaCreate = itemSchema.omit({
+  id: true,
+  status: true,
+});
+
+export type ItemSchemaCreate = z.infer<typeof itemSchemaCreate>;
+
 export type SortKey = keyof ItemSchema;
 
 export const itemSchemaAddItem = itemSchema.omit({
+  id: true,
   image: true,
   status: true,
 });

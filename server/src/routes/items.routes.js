@@ -45,27 +45,33 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
+    console.log("Received data:", req.body);
+
     const data = req.body;
     data.status = "available";
+
     const validateData = itemSchema.safeParse(data);
-    console.log("validateDatavalidateData", validateData.error?.message);
     if (!validateData.success) {
       return res.status(400).json({
         message: validateData.error.message,
         status: false,
       });
     }
-    console.log("validateData", validateData);
+
+    console.log("Validated data:", validateData.data);
+
     const itemId = uuidv4();
     const itemData = { ...validateData.data, itemId };
     const item = new Items(itemData);
 
     await item.save();
+
     return res.json({
       success: true,
       item,
     });
   } catch (e) {
+    console.error("Server error:", e);
     return res.status(500).json({
       success: false,
       error: e.message,

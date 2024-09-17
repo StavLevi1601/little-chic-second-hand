@@ -11,13 +11,17 @@ import {
   Button,
 } from "./modal-add-item.style";
 import { useForm } from "react-hook-form";
-import { ItemSchema, itemsSchemaKeys } from "../../validations/itemSchema";
+import {
+  ItemSchema,
+  ItemSchemaAddItem,
+  itemsSchemaKeys,
+} from "../../validations/itemSchema";
 import { fetch } from "../../utils/fetch";
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  updaeAddingItem: (item: ItemSchema) => void;
+  updaeAddingItem: (item: ItemSchemaAddItem) => void;
 };
 
 export default function ModalAddItem({
@@ -31,9 +35,20 @@ export default function ModalAddItem({
 
   console.log(price);
 
-  const onSubmit = async (data: ItemSchema) => {
+  const onSubmit = async (data: ItemSchemaAddItem) => {
     try {
-      const result = await fetch(data);
+      console.log("before fetch", data);
+      const newData = {
+        color: data.color,
+        description: description,
+        name: data.name,
+        price: price,
+        size: data.size,
+        type: data.type,
+      };
+      const result = await fetch(newData);
+      console.log("result", result);
+
       console.log(result.data.item);
       updaeAddingItem(result.data.item);
       onClose();
@@ -51,6 +66,8 @@ export default function ModalAddItem({
   };
 
   if (!isOpen) return null;
+
+  console.log("itemsSchemaKeys", itemsSchemaKeys);
 
   return (
     <Container onClick={handleContainerClick}>

@@ -11,7 +11,7 @@ export function DetailsCollection({ name, price }: Props) {
         <CollectionText>{name}</CollectionText>
         <CollectionText>{price}₪</CollectionText>
         <button
-          style={{ border: "1px solid gray", width: "100%", padding: "5px" }}
+          style={{ border: "1px solid gray", width: "179px", padding: "5px" }}
         >
           Add to cart
         </button>

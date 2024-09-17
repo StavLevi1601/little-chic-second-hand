@@ -1,14 +1,15 @@
 import axios from "axios";
-import { ItemSchema } from "../validations/itemSchema";
+import { ItemSchemaCreate } from "../validations/itemSchema";
 
-export const fetch = async (data: ItemSchema) => {
+export const fetch = async (data: ItemSchemaCreate) => {
   try {
     console.log("Data:", data);
 
-    const token = localStorage.getItem("token"); // קבלת הטוקן מה-LocalStorage
+    const token = localStorage.getItem("token");
     console.log(`${import.meta.env.VITE_BACKEND_URL}items`);
 
-    data.price = parseInt(data.price.toString());
+    data.price = Number(data.price);
+
     const result = await axios.post(
       `${import.meta.env.VITE_BACKEND_URL}items`,
       data,
@@ -20,11 +21,15 @@ export const fetch = async (data: ItemSchema) => {
       }
     );
 
-    console.log(result);
+    console.log("Response:", result);
 
-    return result;
+    return result.data;
   } catch (e) {
-    console.error("Error adding item:", e);
+    if (axios.isAxiosError(e)) {
+      console.error("Axios error:", e.response?.data || e.message);
+    } else {
+      console.error("Error adding item:", e);
+    }
     throw e;
   }
 };

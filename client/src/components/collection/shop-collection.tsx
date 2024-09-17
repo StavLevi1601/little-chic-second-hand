@@ -1,6 +1,6 @@
 import { DetailsCollection } from "./details-collection";
 import { FilterCollection } from "./filter-collection";
-import { mockImage } from "../../mock/collection-shop";
+import { collections, mockImage } from "../../mock/collection-shop";
 import {
   CollectionDetails,
   CollectionImage,
@@ -14,19 +14,57 @@ import {
 } from "../../validations/itemSchema";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { fetchGetItem } from "../../utils/fetch";
+import ModalAddItem from "../items/modal-add-item";
+import { Button } from "../welcome/welcome.style";
 
-type Props = {
-  collectionsShop: ItemSchema[];
-};
-
-export function ShopCollection({ collectionsShop }: Props) {
+export function ShopCollection() {
   const [sortType, setSortType] = useState<SortKey>(itemsSchemaFilterKeys[0]);
   const [collectionsFilter, setCollectionsFilter] =
-    useState<ItemSchema[]>(collectionsShop);
+    useState<ItemSchema[]>(collections);
+  const [isOpenModal, setIsOpenModal] = useState(false);
+
+  // const filteredItems = useMemo(
+  //   () =>
+  //     [...collectionsFilter].sort((item1, item2) => {
+  //       if (item1[sortType]! < item2[sortType]!) {
+  //         return -1;
+  //       }
+  //       if (item1[sortType]! > item2[sortType]!) {
+  //         return 1;
+  //       }
+  //       return 0;
+  //     }),
+
+  //   [collectionsFilter, sortType]
+  // );
 
   useEffect(() => {
-    setCollectionsFilter(collectionsShop);
-  }, [collectionsShop]);
+    const fetchItems = async () => {
+      const { data } = await fetchGetItem();
+      console.log("data.data", data.data);
+
+      setCollectionsFilter((prevCollections) => {
+        const newItems = data.data
+          .filter(
+            (newItem: ItemSchema) =>
+              !prevCollections.some(
+                (prevCollection) => prevCollection.id === newItem.id
+              )
+          )
+          .map((newItem: ItemSchema) => {
+            return {
+              ...newItem,
+              image: mockImage,
+            };
+          });
+
+        return [...prevCollections, ...newItems];
+      });
+    };
+
+    fetchItems();
+  }, []);
 
   const navigate = useNavigate();
 
@@ -37,7 +75,7 @@ export function ShopCollection({ collectionsShop }: Props) {
   const handleCollectionAccordingFilter = (
     filters: Record<string, string[]>
   ) => {
-    const newCollections = collectionsShop.filter((collection) => {
+    const newCollections = collections.filter((collection) => {
       return Object.entries(filters).every(([key, values]) => {
         if (values.length === 0) {
           return true;
@@ -51,6 +89,24 @@ export function ShopCollection({ collectionsShop }: Props) {
 
   const handleProductPage = (collection: ItemSchema) => {
     navigate(`/items/${collection.id}`);
+  };
+
+  const openModalAddItem = () => {
+    setIsOpenModal(true);
+  };
+
+  const closeModalAddItem = () => {
+    console.log("ffff");
+
+    setIsOpenModal(false);
+  };
+
+  const handleUpdateAddingItem = (item: ItemSchema) => {
+    console.log("update", item);
+    setCollectionsFilter((prevCollections) => {
+      return [...prevCollections, item];
+    });
+    console.log("collectionsShop", collectionsFilter);
   };
 
   return (
@@ -71,10 +127,16 @@ export function ShopCollection({ collectionsShop }: Props) {
           </CollectionDetails>
         ))}
       </CollectionSubContainer>
+      <Button onClick={openModalAddItem}>Add item</Button>
       <SortCollection
         onSortChange={handleSortChange}
         selected={sortType}
         sortTypesOption={itemsSchemaFilterKeys}
+      />
+      <ModalAddItem
+        isOpen={isOpenModal}
+        onClose={closeModalAddItem}
+        updaeAddingItem={handleUpdateAddingItem}
       />
     </div>
   );
