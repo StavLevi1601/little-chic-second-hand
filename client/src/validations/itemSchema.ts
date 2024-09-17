@@ -39,6 +39,8 @@ export const itemsSchemaKeys = Object.keys(itemSchemaAddItem.shape) as Array<
   keyof typeof itemSchemaAddItem.shape
 >;
 
+export type ItemSchemaAddItem = z.infer<typeof itemSchemaAddItem>;
+
 export const itemSchemaFilter = itemSchema.omit({
   name: true,
   image: true,
