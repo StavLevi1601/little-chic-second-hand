@@ -8,7 +8,6 @@ import { useState } from "react";
 function Layout() {
   const [showBackground, setShowBackground] = useState<boolean>(true);
   const [dividedText, setDividedText] = useState<boolean>(false);
-
   const navigate = useNavigate();
 
   const handleNavigation = (path: string) => {
