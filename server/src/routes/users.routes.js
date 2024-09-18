@@ -6,7 +6,6 @@ import crypto from "crypto";
 const router = express.Router();
 
 router.post("/signup", async (req, res) => {
-  console.log("fdsfsfsf");
   try {
     const existingUser = await Users.findOne({
       email: req.body.email,
@@ -64,6 +63,7 @@ router.post("/login", async (req, res) => {
     res.json({
       success: true,
       message: "login working",
+      user,
     });
   } catch (e) {
     res.status(500).json({

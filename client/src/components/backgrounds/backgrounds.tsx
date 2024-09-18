@@ -14,14 +14,8 @@ const backgrounds = [
   `url(${background5})`,
 ];
 
-type Props = {
-  isShowItems: boolean;
-};
-
-export function AnimationBackgrounds({ isShowItems }: Props) {
+export function AnimationBackgrounds() {
   const [currentBackground, setCurrentBackground] = useState<number>(0);
-
-  console.log(isShowItems);
 
   useEffect(() => {
     const interval = setInterval(() => {

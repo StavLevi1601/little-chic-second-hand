@@ -23,6 +23,8 @@ export const collections = [
     size: "0-3 months",
     status: "Available",
     image: image1,
+    buyer_id: "",
+    seller_id: "111",
   },
   {
     id: "4659474a-40af-4ce2-a22a-b1239f0e99d5",
@@ -34,6 +36,8 @@ export const collections = [
     size: "0-3 months",
     status: "Available",
     image: image2,
+    buyer_id: "",
+    seller_id: "111",
   },
   {
     id: "fa3a71d5-ea8b-4613-b2b7-a8aec51f00dc",
@@ -45,6 +49,8 @@ export const collections = [
     size: "0-3 months",
     status: "Available",
     image: image3,
+    buyer_id: "",
+    seller_id: "111",
   },
   {
     id: "9c009a96-fce0-4826-8546-4b45ae241f48",
@@ -56,6 +62,8 @@ export const collections = [
     size: "0-3 months",
     status: "Available",
     image: image4,
+    buyer_id: "",
+    seller_id: "111",
   },
   {
     id: "88ae0103-b6dc-42cb-a113-542dc652dc57",
@@ -67,6 +75,8 @@ export const collections = [
     size: "0-3 months",
     status: "Available",
     image: image5,
+    buyer_id: "",
+    seller_id: "111",
   },
   {
     id: "dfc545da-46ea-4f47-9cac-caaa78f0b40b",
@@ -78,6 +88,8 @@ export const collections = [
     size: "0-3 months",
     status: "Not Available",
     image: image6,
+    buyer_id: "",
+    seller_id: "111",
   },
   {
     id: "81a5d48a-8d25-4fae-a153-7355426e21c1",
@@ -89,6 +101,8 @@ export const collections = [
     size: "0-3 months",
     status: "Available",
     image: image7,
+    buyer_id: "",
+    seller_id: "111",
   },
   {
     id: "90bb8cee-7952-46da-b9a4-56f9863dc9d5",
@@ -100,6 +114,8 @@ export const collections = [
     size: "0-3 months",
     status: "Available",
     image: image8,
+    buyer_id: "",
+    seller_id: "111",
   },
   {
     id: "bc787644-2516-41ab-bc2a-7aeff5aedd92",
@@ -111,6 +127,8 @@ export const collections = [
     size: "0-3 months",
     status: "Available",
     image: image9,
+    buyer_id: "",
+    seller_id: "111",
   },
   {
     id: "7a9626ee-b7a4-4792-a924-9ce462ad19c4",
@@ -122,6 +140,8 @@ export const collections = [
     size: "0-3 months",
     status: "Available",
     image: image10,
+    buyer_id: "",
+    seller_id: "111",
   },
   {
     id: "668c7eb6-1cd8-4616-b3e9-54d2ae5a7fe2",
@@ -133,6 +153,8 @@ export const collections = [
     size: "0-3 months",
     status: "Not Available",
     image: image11,
+    buyer_id: "",
+    seller_id: "111",
   },
 ];
 

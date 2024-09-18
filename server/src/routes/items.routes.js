@@ -4,6 +4,7 @@ import { Items } from "../Models/items.js";
 import { itemSchema } from "../validations/items.js";
 import { v4 as uuidv4 } from "uuid";
 import { getAllCollectionImages } from "../aws/s3.js";
+import { log } from "console";
 
 const router = express.Router();
 
@@ -28,6 +29,7 @@ router.get("/images", async (req, res) => {
 
 router.get("/", async (req, res) => {
   try {
+    console.log("before the fund");
     const data = await Items.find({});
     console.log("data", data);
 
@@ -45,27 +47,34 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
+    console.log("Received data:", req.body);
+
     const data = req.body;
     data.status = "available";
+
     const validateData = itemSchema.safeParse(data);
-    console.log("validateDatavalidateData", validateData.error?.message);
+    console.log("validateData", validateData);
     if (!validateData.success) {
       return res.status(400).json({
         message: validateData.error.message,
         status: false,
       });
     }
-    console.log("validateData", validateData);
+
+    console.log("Validated data:", validateData.data);
+
     const itemId = uuidv4();
     const itemData = { ...validateData.data, itemId };
     const item = new Items(itemData);
 
     await item.save();
+
     return res.json({
       success: true,
       item,
     });
   } catch (e) {
+    console.error("Server error:", e);
     return res.status(500).json({
       success: false,
       error: e.message,

@@ -9,7 +9,7 @@ import authRouter from "./routes/auth.routes.js";
 import authenticateToken from "./middleware/auth.js";
 
 const app = express();
-const port = 7001;
+const port = 9001;
 
 mongoose.connect(
   `mongodb+srv://${process.env.MONGO_DETAILS}.pvpztpj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`

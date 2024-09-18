@@ -1,8 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Button, Container, Header, SearchingRow } from "./welcome.style";
 import ModalAddItem from "../items/modal-add-item";
-import { AnimationBackgrounds } from "../backgrounds/backgrounds";
-import { ShopCollection } from "../collection/shop-collection";
+
 import { DividerWithText } from "../login/login.style";
 import { ItemSchema, SortKey, itemSchema } from "../../validations/itemSchema";
 import { fetchGetItem } from "../../utils/fetch";
@@ -105,11 +104,11 @@ function Welcome() {
         </SearchingRow>
         {isShowItems && <DividerWithText />}
       </div>
-      {!isShowItems ? (
+      {/* {!isShowItems ? (
         <AnimationBackgrounds isShowItems={isShowItems} />
       ) : (
         <ShopCollection collectionsShop={filteredItems} />
-      )}
+      )} */}
       {/* {isShowItems ? (
         <div>
           <SortCollection
@@ -122,11 +121,11 @@ function Welcome() {
       ) : (
         ""
       )} */}
-      <ModalAddItem
+      {/* <ModalAddItem
         isOpen={isOpenModal}
         onClose={closeModalAddItem}
         updaeAddingItem={handleUpdateAddingItem}
-      />
+      /> */}
     </Container>
   );
 }
