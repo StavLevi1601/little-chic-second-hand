@@ -16,6 +16,8 @@ export const itemSchema = z.object({
   size: z.string(),
   status: z.string(),
   image: z.string().optional(),
+  buyer_id: z.string().optional(),
+  seller_id: z.string(),
 });
 
 export type ItemSchema = z.infer<typeof itemSchema>;
@@ -26,8 +28,6 @@ export const itemSchemaCreate = itemSchema.omit({
 });
 
 export type ItemSchemaCreate = z.infer<typeof itemSchemaCreate>;
-
-export type SortKey = keyof ItemSchema;
 
 export const itemSchemaAddItem = itemSchema.omit({
   id: true,
@@ -50,3 +50,17 @@ export const itemSchemaFilter = itemSchema.omit({
 export const itemsSchemaFilterKeys = Object.keys(
   itemSchemaFilter.shape
 ) as Array<keyof typeof itemSchemaFilter.shape>;
+
+export const itemSchemaSortItems = itemSchema.omit({
+  id: true,
+  image: true,
+  description: true,
+});
+
+export type ItemSchemaSortItems = z.infer<typeof itemSchemaSortItems>;
+
+export type SortKey = keyof ItemSchemaSortItems;
+
+export const sortKeySchema = Object.keys(itemSchemaSortItems.shape) as Array<
+  keyof typeof itemSchemaSortItems.shape
+>;

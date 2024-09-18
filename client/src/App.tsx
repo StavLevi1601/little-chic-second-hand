@@ -1,10 +1,9 @@
-import Login from "./components/login/Login";
+import Login from "../src/components/login/login";
 import "./index.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Welcome from "./components/welcome/welcome";
 import useAuthStore from "./store/store";
 import Layout from "./components/main/layout";
-import { ShopCollection } from "./components/collection/shop-collection";
+import { ShopCollection } from "./components/collection/mainContent/shop-collection";
 
 function App() {
   const { isAuthenticated } = useAuthStore();

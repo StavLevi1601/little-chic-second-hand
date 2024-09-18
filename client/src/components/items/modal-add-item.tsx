@@ -21,7 +21,7 @@ import { fetch } from "../../utils/fetch";
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  updaeAddingItem: (item: ItemSchemaAddItem) => void;
+  updaeAddingItem: (item: ItemSchema) => void;
 };
 
 export default function ModalAddItem({
@@ -29,7 +29,7 @@ export default function ModalAddItem({
   onClose,
   updaeAddingItem,
 }: Props) {
-  const { register, reset, handleSubmit } = useForm<ItemSchema>();
+  const { register, reset, handleSubmit } = useForm<ItemSchemaAddItem>();
   const [description, setDescription] = useState<string>("");
   const [price, setPrice] = useState<number>(0);
 
@@ -37,20 +37,10 @@ export default function ModalAddItem({
 
   const onSubmit = async (data: ItemSchemaAddItem) => {
     try {
-      console.log("before fetch", data);
-      const newData = {
-        color: data.color,
-        description: description,
-        name: data.name,
-        price: price,
-        size: data.size,
-        type: data.type,
-      };
-      const result = await fetch(newData);
-      console.log("result", result);
+      console.log("DataAll:", data);
 
-      console.log(result.data.item);
-      updaeAddingItem(result.data.item);
+      const result = await fetch(data);
+      updaeAddingItem(result.item);
       onClose();
       reset();
     } catch (e) {

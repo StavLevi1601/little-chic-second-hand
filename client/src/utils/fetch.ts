@@ -6,6 +6,8 @@ export const fetch = async (data: ItemSchemaCreate) => {
     console.log("Data:", data);
 
     const token = localStorage.getItem("token");
+    console.log("Token:", token);
+
     console.log(`${import.meta.env.VITE_BACKEND_URL}items`);
 
     data.price = Number(data.price);
@@ -38,7 +40,7 @@ export const fetchGetItem = async () => {
   try {
     const token = localStorage.getItem("token");
 
-    const result = await axios.get(`${import.meta.env.VITE_BACKEND_URL}items`, {
+    const result = await axios.get(`http://localhost:9001/items`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
