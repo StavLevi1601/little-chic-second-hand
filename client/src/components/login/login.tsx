@@ -16,7 +16,7 @@ import { loginUser } from "../../utils/loginUser";
 import { signupUser } from "../../utils/signupUser";
 import { LoginSchema, loginSchema } from "../../validations/loginSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import useAuthStore from "../../store/store";
+import useAuthStore from "../../store/useAuthState";
 import { useNavigate } from "react-router-dom";
 
 type Action = "sign_up" | "login";
@@ -42,8 +42,8 @@ export default function Login(): JSX.Element {
       const result = await loginUser(data);
       if (result?.status === 200) {
         const user = result.data.user;
-        console.log("user", user);
-
+        console.log("user", user._id.toString());
+        user.id = user._id.toString();
         login(user);
         navigate("/");
       }

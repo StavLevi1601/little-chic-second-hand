@@ -17,6 +17,7 @@ import {
   itemsSchemaKeys,
 } from "../../validations/itemSchema";
 import { fetch } from "../../utils/fetch";
+import useAuthStore from "../../store/useAuthState";
 
 type Props = {
   isOpen: boolean;
@@ -32,13 +33,14 @@ export default function ModalAddItem({
   const { register, reset, handleSubmit } = useForm<ItemSchemaAddItem>();
   const [description, setDescription] = useState<string>("");
   const [price, setPrice] = useState<number>(0);
-
+  const { user } = useAuthStore();
   console.log(price);
 
   const onSubmit = async (data: ItemSchemaAddItem) => {
     try {
       console.log("DataAll:", data);
 
+      data.seller_id = user!.id ? user!.id : "111";
       const result = await fetch(data);
       updaeAddingItem(result.item);
       onClose();
@@ -80,7 +82,7 @@ export default function ModalAddItem({
 
             {itemsSchemaKeys.map((key) => (
               <div
-                key={key}
+                key={key.toString()}
                 style={{
                   display: "flex",
                   justifyContent: "space-around",

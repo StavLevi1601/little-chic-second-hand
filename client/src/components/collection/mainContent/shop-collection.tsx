@@ -17,13 +17,14 @@ import { useNavigate } from "react-router-dom";
 import { fetchGetItem } from "../../../utils/fetch";
 import ModalAddItem from "../../items/modal-add-item";
 import { AddCollection } from "../topRightAction/add-collection";
+import useAuthStore from "../../../store/useAuthState";
 
 export function ShopCollection() {
   const [sortType, setSortType] = useState<SortKey>(sortKeySchema[0]);
   const [collectionsFilter, setCollectionsFilter] =
     useState<ItemSchema[]>(collections);
   const [isOpenModal, setIsOpenModal] = useState(false);
-
+  const { user } = useAuthStore();
   // const filteredItems = useMemo(
   //   () =>
   //     [...collectionsFilter].sort((item1, item2) => {
@@ -60,6 +61,12 @@ export function ShopCollection() {
           });
 
         return [...prevCollections, ...newItems];
+      });
+
+      collectionsFilter.forEach((collection) => {
+        if (collection.seller_id === user?.id) {
+          console.log("collection", collection);
+        }
       });
     };
 
@@ -122,7 +129,12 @@ export function ShopCollection() {
               name={collection.name}
               price={collection.price}
             />
-
+            {/* {collection.seller_id === user?.id && (
+              <div>
+                <button>Edit</button>
+                <button>Edit</button>
+              </div>
+            )} */}
             {/* <DeleteCollection
               onDelete={() => handleDeleteCollection(collection.id)}/>
               <EditCollection onEdit={() => handleEditCollection(collection.id)}/> */}

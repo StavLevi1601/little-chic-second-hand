@@ -9,4 +9,6 @@ export const itemSchema = z.object({
   price: z.number(),
   color: z.string(),
   size: z.string(),
+  buyer_id: z.string(),
+  seller_id: z.string(),
 });

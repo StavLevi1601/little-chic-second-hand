@@ -51,7 +51,7 @@ router.post("/", async (req, res) => {
 
     const data = req.body;
     data.status = "available";
-
+    console.log("datadatadata", data);
     const validateData = itemSchema.safeParse(data);
     console.log("validateData", validateData);
     if (!validateData.success) {
@@ -65,8 +65,9 @@ router.post("/", async (req, res) => {
 
     const itemId = uuidv4();
     const itemData = { ...validateData.data, itemId };
+    console.log("itemData", itemData);
     const item = new Items(itemData);
-
+    console.log("item", item);
     await item.save();
 
     return res.json({

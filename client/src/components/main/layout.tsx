@@ -8,22 +8,29 @@ import { useState } from "react";
 function Layout() {
   const [showBackground, setShowBackground] = useState<boolean>(true);
   const [dividedText, setDividedText] = useState<boolean>(false);
+  const [path, setPath] = useState<string>("/");
   const navigate = useNavigate();
 
   const handleNavigation = (path: string) => {
-    console.log("path", path);
-
     if (path !== "/") {
       setShowBackground(false);
       setDividedText(true);
+      setPath(path);
     } else {
       setShowBackground(true);
       setDividedText(false);
+      setPath(path);
     }
     navigate(path);
   };
 
   console.log("showBackground", showBackground);
+
+  // const handleCollectionAccordingFilter = (
+  //   filters: Record<string, string[]>
+  // ) => {
+  //   console.log("filters", filters);
+  // };
 
   return (
     <Container style={{ flexDirection: "column" }}>
@@ -49,14 +56,15 @@ function Layout() {
             Gift Card
           </StyledLink>
           <StyledLink
-            to="/my-items"
-            onClick={() => handleNavigation("/my-items")}
+            to="/my-collection"
+            onClick={() => handleNavigation("/my-collection")}
           >
-            My items
+            My collection
           </StyledLink>
         </SearchingRow>
         {dividedText && <DividerWithText />}
         {showBackground && <AnimationBackgrounds />}
+        {/* <FilterCollection onFilter={handleCollectionAccordingFilter} /> */}
       </div>
       <main>
         <Outlet />

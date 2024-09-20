@@ -3,6 +3,7 @@ import express from "express";
 import { generateAccessToken, authenticateToken } from "../middleware/auth.js";
 import { Users } from "../Models/users.js";
 import crypto from "crypto";
+import { log } from "console";
 const router = express.Router();
 
 router.post("/signup", async (req, res) => {
@@ -53,12 +54,15 @@ router.post("/login", async (req, res) => {
       password: passHash,
     });
 
+    console.log("the user from backend is", user._id.toString());
     if (!user) {
       return res.status(401).json({
         success: false,
         message: "Invalid email or password",
       });
     }
+
+    user.id = user._id.toString();
 
     res.json({
       success: true,

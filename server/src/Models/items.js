@@ -19,7 +19,7 @@ export const Items = mongoose.model("Items", {
     default: new Date(),
   },
   buyer_id: String,
-  sellecer_id: String,
+  seller_id: String,
 });
 
 //TODO:: adding uuid

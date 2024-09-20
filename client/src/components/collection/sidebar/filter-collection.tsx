@@ -26,7 +26,7 @@ export function FilterCollection({ onFilter }: Props) {
   return (
     <FilterContainer>
       <FilterText>Filter by</FilterText>
-      <DividerWithText />
+      {/* <DividerWithText /> */}
       {itemsSchemaFilterKeys.map((title, index) => (
         <FilterItem key={index}>
           <Accordion title={title} onFilterChange={handleFilterChange} />
