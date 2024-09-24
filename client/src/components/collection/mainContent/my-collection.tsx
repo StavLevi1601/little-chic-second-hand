@@ -9,7 +9,7 @@ import { Button } from "../collection.style";
 export function MyCollection() {
   const {user} = useAuthStore();
   const [collections,setCollections] = useState<ItemSchema[]>([]);
-
+  const [collectionsArrayClicked,setCollectionArrayClicked] = useState<boolean[]>(() => Array(collections.length).fill(false));
   const handleCollectionAccordingFilter = () => {};
 
   useEffect(()=> {
@@ -23,42 +23,41 @@ export function MyCollection() {
     fetchMyItems()
   },[])
 
-  const handleDeleteItem = () => {
-
-  }
-
-  const handleClickedItems = async (arrayClicked: boolean[]) => {
-    console.log(arrayClicked);
+  const handleDeleteItem = async () => {
+    console.log(collectionsArrayClicked);
     console.log(collections);
     
-    const collectionsDelete = collections.filter((collection, index) => arrayClicked[index] === true);
+    const collectionsDelete = collections.filter((collection, index) => collectionsArrayClicked[index] === true);
     
     try {
       const result = await deleteSpesificCollection(collectionsDelete);
       
-      // השהייה של שנייה אחת
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       if (result.data.success) {
         setCollections((prev) => {
-          const newCollection = prev.filter((collection, index) => arrayClicked[index] === false);
+          const newCollection = prev.filter((collection, index) => collectionsArrayClicked[index] === false);
           return newCollection;
         });
         
-        // כאן אפשר להוסיף הודעה למשתמש על הצלחת המחיקה
         console.log("Items deleted successfully");
       } else {
-        // טיפול במקרה שהמחיקה לא הצליחה
         console.error("Failed to delete items:", result.data.message);
       }
       
       console.log("Result:", result);
     } catch (error) {
-      // טיפול בשגיאות
       console.error("Error deleting items:", error);
-      // כאן אפשר להוסיף הודעת שגיאה למשתמש
     }
+  }
+
+  const handleClickedItems = async (arrayClicked: boolean[]) => {
+    setCollectionArrayClicked(arrayClicked)
   };
+
+  const handleEditItem = () => {
+    // const newArray = collectionsArrayClicked.find((collection,index)=> collection[index]===true)
+  }
 
 
   return (
@@ -83,7 +82,7 @@ export function MyCollection() {
             }}
           >
             <Button onClick={handleDeleteItem}>Delete item</Button>
-            <Button>Edit item</Button>
+            <Button onClick={handleEditItem}>Edit item</Button>
 
           </div>
         </div>
