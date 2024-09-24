@@ -8,9 +8,10 @@ export const CollectionContainer = styled.div`
 export const CollectionSubContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  margin: 0 auto;
+  gap: 20px;
+  padding: 20px;
+  width: 100%;
 `;
-
 export const CollectionImage = styled.img`
   object-fit: contain;
   width: 100%;

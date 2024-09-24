@@ -1,7 +1,7 @@
 import Login from "../src/components/login/login";
 import "./index.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import useAuthStore from "./store/useAuthState";
+import useAuthStore from "../src/store/useAuthState";
 import Layout from "./components/main/layout";
 import { ShopCollection } from "./components/collection/mainContent/shop-collection";
 import { MyCollection } from "./components/collection/mainContent/my-collection";

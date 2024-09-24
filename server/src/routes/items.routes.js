@@ -105,6 +105,25 @@ router.get("/:itemId", async (req, res) => {
   }
 });
 
+router.get("/my-items/:userId", async (req, res) => {
+  try {
+    console.log("ffff");
+    const { userId } = req.params;
+    console.log("userId",req.params);
+    const items = await Items.find({ seller_id: userId });
+    console.log("itemsitems",items);
+    return res.json({
+      success: true,
+      items,
+    });
+  } catch (e) {
+    return res.status(500).json({
+      success: false,
+      error: e.message,
+    });
+  }
+});
+
 router.put("/:itemId", async (req, res) => {
   try {
     const { itemId } = req.params;
@@ -138,19 +157,32 @@ router.put("/:itemId", async (req, res) => {
   }
 });
 
-router.delete("/:itemId", async (req, res) => {
+router.delete("/", async (req, res) => {
   try {
-    const { itemId } = req.params;
-    const item = await Items.findOneAndDelete({ itemId });
-    if (!item) {
-      return res.status(404).json({
-        message: "item not found",
-        status: false,
+    const itemsToDelete = req.body;
+    console.log(":itemsToDelete", itemsToDelete);
+
+    if (!Array.isArray(itemsToDelete) || itemsToDelete.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid input: expected non-empty array of items to delete",
       });
     }
+
+    const deleteResult = await Items.deleteMany({
+      _id: { $in: itemsToDelete.map(item => item._id) }
+    });
+
+    if (deleteResult.deletedCount === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No items found to delete",
+      });
+    }
+
     res.json({
       success: true,
-      item,
+      deletedCount: deleteResult.deletedCount,
     });
   } catch (e) {
     return res.status(500).json({

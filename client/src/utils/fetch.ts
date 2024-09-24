@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ItemSchemaCreate } from "../validations/itemSchema";
+import { ItemSchema, ItemSchemaCreate } from "../validations/itemSchema";
 
 export const fetch = async (data: ItemSchemaCreate) => {
   try {
@@ -74,3 +74,54 @@ export const fetchCollection = async () => {
     throw error;
   }
 };
+
+export const fetchGetMyCollection = async (userId: string) => {
+  try {
+    console.log("blabla");
+    
+    const token = localStorage.getItem("token");
+    console.log(`${import.meta.env.VITE_BACKEND_URL}items/my-items/${userId}`);
+    
+    if (userId) {
+      const result = await axios.get(`${import.meta.env.VITE_BACKEND_URL}items/my-items/${userId}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return result;
+
+    }
+
+
+  } catch (e) {
+    console.error("Error getting my items:", e);
+    throw e;
+  }
+}
+
+export const deleteSpesificCollection = async (collectionsDelete: ItemSchema[]) => {
+  try {
+    console.log("blabla");
+    
+    const token = localStorage.getItem("token");
+    console.log(`${import.meta.env.VITE_BACKEND_URL}items/delete/`);
+    
+
+      const result = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}items`,
+       {
+        data: collectionsDelete,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return result;
+
+
+
+  } catch (e) {
+    console.error("Error getting my items:", e);
+    throw e;
+  }
+}
