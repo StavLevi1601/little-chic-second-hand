@@ -5,9 +5,11 @@ import { deleteSpesificCollection, fetchGetMyCollection } from "../../../utils/f
 import useAuthStore from "../../../store/useAuthState";
 import { ItemSchema } from "../../../validations/itemSchema";
 import { Button } from "../collection.style";
+import { useNavigate } from "react-router-dom";
 
 export function MyCollection() {
   const {user} = useAuthStore();
+  const navigation = useNavigate();
   const [collections,setCollections] = useState<ItemSchema[]>([]);
   const [collectionsArrayClicked,setCollectionArrayClicked] = useState<boolean[]>(() => Array(collections.length).fill(false));
   const handleCollectionAccordingFilter = () => {};
@@ -52,11 +54,29 @@ export function MyCollection() {
   }
 
   const handleClickedItems = async (arrayClicked: boolean[]) => {
+    console.log("arrayClicked",arrayClicked);
+    
     setCollectionArrayClicked(arrayClicked)
   };
 
   const handleEditItem = () => {
-    // const newArray = collectionsArrayClicked.find((collection,index)=> collection[index]===true)
+    console.log("collectionsArrayClicked",collectionsArrayClicked);
+    const collectionEdit : ItemSchema[] = collections.filter((collection, index) => collectionsArrayClicked[index] === true);
+    if (collectionEdit.length>1) {
+      console.log("you can edit just one item");
+      return
+    }
+    if (collectionEdit.length===0) {
+      console.log("you need to choose a one item");
+      return
+
+    }
+
+    console.log("collectionEdit",collectionEdit);
+    navigation(`/items/${collectionEdit[0].id}`);
+    return
+
+    
   }
 
 

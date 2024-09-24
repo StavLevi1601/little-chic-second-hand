@@ -5,6 +5,7 @@ import useAuthStore from "../src/store/useAuthState";
 import Layout from "./components/main/layout";
 import { ShopCollection } from "./components/collection/mainContent/shop-collection";
 import { MyCollection } from "./components/collection/mainContent/my-collection";
+import { ItemDetails } from "./components/items/item-details";
 
 function App() {
   const { isAuthenticated } = useAuthStore();
@@ -30,7 +31,9 @@ function App() {
         <Route path="/" element={<Layout />}>
           {/* {isAuthenticated ? <Route path="/" element={<Welcome />} /> : null} */}
           <Route path="collection" element={<ShopCollection />} />
-          // <Route path="my-collection" element={<MyCollection />} />
+          <Route path="my-collection" element={<MyCollection />} />
+          <Route path="items/:itemId" element={<ItemDetails/>}/>
+
           {/* // <Route path="our-story" element={<OurStory />} />
           // <Route path="gift-card" element={<GiftCard />} />
           // <Route path="add-item" element={<AddItem />} />
