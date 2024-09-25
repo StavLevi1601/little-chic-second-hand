@@ -35,7 +35,7 @@ export function MyCollection() {
 
   const handleDeleteItem = async () => {
     console.log(collections);
-    console.log("selected",selected);
+    console.log("selected stav",selected);
     
     
     try {
