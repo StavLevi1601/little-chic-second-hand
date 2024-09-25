@@ -47,13 +47,12 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    console.log("Received data:", req.body);
-
     const data = req.body;
+
     data.status = "available";
-    console.log("datadatadata", data);
+
     const validateData = itemSchema.safeParse(data);
-    console.log("validateData", validateData);
+    
     if (!validateData.success) {
       return res.status(400).json({
         message: validateData.error.message,
@@ -169,9 +168,7 @@ router.delete("/", async (req, res) => {
       });
     }
 
-    const deleteResult = await Items.deleteMany({
-      _id: { $in: itemsToDelete.map(item => item._id) }
-    });
+    const deleteResult = await Items.deleteMany({id: itemsToDelete})
 
     if (deleteResult.deletedCount === 0) {
       return res.status(404).json({
