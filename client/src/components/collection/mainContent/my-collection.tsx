@@ -34,9 +34,7 @@ export function MyCollection() {
 
 
   const handleDeleteItem = async () => {
-    console.log(collections);
-    console.log("selected stav",selected);
-    
+    console.log(collections);    
     
     try {
       const result = await deleteSpesificCollection(selected);

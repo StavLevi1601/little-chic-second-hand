@@ -47,13 +47,12 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    console.log("Received data:", req);
-
     const data = req.body;
+
     data.status = "available";
-    console.log("datadatadata", data);
+
     const validateData = itemSchema.safeParse(data);
-    console.log("validateData", validateData);
+    
     if (!validateData.success) {
       return res.status(400).json({
         message: validateData.error.message,
