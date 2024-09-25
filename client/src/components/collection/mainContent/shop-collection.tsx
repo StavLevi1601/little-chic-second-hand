@@ -18,6 +18,9 @@ export function ShopCollection() {
   const [collectionsFilter, setCollectionsFilter] =
     useState<ItemSchema[]>(collections);
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+
+
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -60,9 +63,9 @@ export function ShopCollection() {
     setCollectionsFilter((prevCollections) => [...prevCollections, item]);
   };
 
-  const handleClickItems = () => {
-    
-  }
+  const handleSelect = (ids: string[]) => {
+    setSelectedIds(ids);
+  };
 
   return (
     <CollectionContainer>
@@ -76,7 +79,7 @@ export function ShopCollection() {
             padding: "20px",
           }}
         >
-          <Collections collections={collectionsFilter!} onClickHandle={handleClickItems} />
+          <Collections collections={collectionsFilter!} selectedIds={selectedIds} onSelect={handleSelect} allowSelection={false}/>
           <div
             style={{
               display: "flex",

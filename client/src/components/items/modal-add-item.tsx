@@ -39,7 +39,8 @@ export default function ModalAddItem({
   const onSubmit = async (data: ItemSchemaAddItem) => {
     try {
       console.log("DataAll:", data);
-
+      console.log("user",user);
+      
       data.seller_id = user!.id ? user!.id : "111";
       const result = await fetch(data);
       updaeAddingItem(result.item);

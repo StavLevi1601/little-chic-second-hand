@@ -12,9 +12,16 @@ export const CollectionSubContainer = styled.div`
   padding: 20px;
   width: 100%;
 `;
-export const CollectionImage = styled.img`
+
+type CollectionImageProps = {
+  fontStyle: 'bold' | 'normal'
+  border: '2px solid gray' | 'none'
+}
+export const CollectionImage = styled.img<CollectionImageProps>`
   object-fit: contain;
   width: 100%;
+  font-weight: ${props => props.fontStyle};
+  border: ${props => props.border};
 `;
 
 export const CollectionDetails = styled.div`

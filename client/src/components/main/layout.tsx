@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Container, Header, SearchingRow } from "../welcome/welcome.style";
 import { StyledLink } from "./layout.style";
 import { AnimationBackgrounds } from "../backgrounds/backgrounds";
@@ -9,13 +9,17 @@ function Layout() {
   const [showBackground, setShowBackground] = useState<boolean>(true);
   const [dividedText, setDividedText] = useState<boolean>(false);
   const [path, setPath] = useState<string>("/");
-  const navigate = useNavigate();
+  // const location = useLocation();
 
+  const navigate = useNavigate();
+  console.log(path);
+  
   const handleNavigation = (path: string) => {
     if (path !== "/") {
       setShowBackground(false);
       setDividedText(true);
       setPath(path);
+      
     } else {
       setShowBackground(true);
       setDividedText(false);

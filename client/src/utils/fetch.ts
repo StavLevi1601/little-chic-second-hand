@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ItemSchema, ItemSchemaCreate } from "../validations/itemSchema";
+import { ItemSchemaCreate } from "../validations/itemSchema";
 
 export const fetch = async (data: ItemSchemaCreate) => {
   try {
@@ -100,9 +100,8 @@ export const fetchGetMyCollection = async (userId: string) => {
   }
 }
 
-export const deleteSpesificCollection = async (collectionsDelete: ItemSchema[]) => {
+export const deleteSpesificCollection = async (collectionsDelete: string[]) => {
   try {
-    console.log("blabla");
     
     const token = localStorage.getItem("token");
     console.log(`${import.meta.env.VITE_BACKEND_URL}items/delete/`);

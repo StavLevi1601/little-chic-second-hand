@@ -29,6 +29,7 @@ function App() {
         <Route path="login" element={<Login />} />
 
         <Route path="/" element={<Layout />}>
+          
           {/* {isAuthenticated ? <Route path="/" element={<Welcome />} /> : null} */}
           <Route path="collection" element={<ShopCollection />} />
           <Route path="my-collection" element={<MyCollection />} />

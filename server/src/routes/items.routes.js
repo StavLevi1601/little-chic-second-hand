@@ -64,7 +64,7 @@ router.post("/", async (req, res) => {
     console.log("Validated data:", validateData.data);
 
     const itemId = uuidv4();
-    const itemData = { ...validateData.data, itemId };
+    const itemData = { ...validateData.data, id: itemId };
     console.log("itemData", itemData);
     const item = new Items(itemData);
     console.log("item", item);
