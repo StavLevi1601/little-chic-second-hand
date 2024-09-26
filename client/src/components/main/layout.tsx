@@ -1,4 +1,4 @@
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { Container, Header, SearchingRow } from "../welcome/welcome.style";
 import { StyledLink } from "./layout.style";
 import { AnimationBackgrounds } from "../backgrounds/backgrounds";

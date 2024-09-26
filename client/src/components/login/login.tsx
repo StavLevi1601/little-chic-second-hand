@@ -22,7 +22,7 @@ import { useNavigate } from "react-router-dom";
 type Action = "sign_up" | "login";
 
 export default function Login(): JSX.Element {
-  const { login } = useAuthStore();
+  const { login,setIsAuthenticated } = useAuthStore();
   const navigate = useNavigate(); // יצירת useNavigate
 
   const {
@@ -38,13 +38,14 @@ export default function Login(): JSX.Element {
     if (action === "sign_up") {
       await signupUser(data);
     }
-    if (action === "login") {
+    if (action === "login") {      
       const result = await loginUser(data);
       if (result?.status === 200) {
         const user = result.data.user;
         console.log("user", user._id.toString());
         user.id = user._id.toString();
         login(user);
+        setIsAuthenticated(true);
         navigate("/");
       }
     }
