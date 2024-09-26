@@ -12,11 +12,11 @@ interface AuthState {
 }
 
 const useAuthStore = create<AuthState>((set) => ({
-  isAuthenticated: localStorage.getItem("token") ? true : false,
+  isAuthenticated: getToken() ? true : false,
   user: null,
   login: (user) => {
     set({ isAuthenticated: true, user });
-    const token = localStorage.getItem("token") ? localStorage.getItem("token") : null
+    const token = getToken() ? getToken() : null
     setToken(token) // Save the token to local storage
   },
   logout: () => {
