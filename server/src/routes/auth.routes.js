@@ -23,4 +23,13 @@ router.post("/", async (req, res) => {
   }
 });
 
+
+router.get('/validate-token', async (req,res)=> {
+  console.log("ffff");
+  res.json({
+    success: true,
+    message: "Token is valid"
+  })
+})
+
 export default router;
