@@ -84,8 +84,10 @@ router.post("/", async (req, res) => {
 
 router.get("/:itemId", async (req, res) => {
   try {
+    console.log("req.params",req.params);
     const { itemId } = req.params;
-    const item = await Items.findOne({ itemId });
+    const item = await Items.findOne({ id: itemId });
+    console.log("item",item);
     if (!item) {
       return res.status(404).json({
         message: "item not found",
@@ -126,7 +128,10 @@ router.get("/my-items/:userId", async (req, res) => {
 router.put("/:itemId", async (req, res) => {
   try {
     const { itemId } = req.params;
-    const data = req.body;
+    const data = req.body.item; // שים לב לשינוי כאן
+    console.log("data to update", data);
+    console.log("itemId to update", itemId);
+
     const validateData = itemSchema.safeParse(data);
     if (!validateData.success) {
       return res.status(400).json({
@@ -135,7 +140,7 @@ router.put("/:itemId", async (req, res) => {
       });
     }
 
-    const item = await Items.findOneAndUpdate({ itemId }, validateData.data, {
+    const item = await Items.findOneAndUpdate({ id: itemId }, validateData.data, {
       new: true,
     });
     if (!item) {

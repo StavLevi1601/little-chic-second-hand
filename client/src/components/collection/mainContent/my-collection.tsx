@@ -1,20 +1,21 @@
  import { useEffect, useState } from "react";
 import { FilterCollection } from "../sidebar/filter-collection";
 import { Collections } from "./collections";
-import { deleteSpesificCollection, fetchGetMyCollection } from "../../../utils/fetch";
+import { deleteSpesificCollection, fetchGetMyCollection, getOneItem } from "../../../utils/fetch";
 import useAuthStore from "../../../store/useAuthState";
 import { ItemSchema } from "../../../validations/itemSchema";
 import { Button } from "../collection.style";
+import ModalItem from "../../items/modal-item";
 // import { useNavigate } from "react-router-dom";
 
 export function MyCollection() {
   const {user} = useAuthStore();
-  // const navigation = useNavigate();
   const [collections,setCollections] = useState<ItemSchema[]>([]);
   const [selected,setSelected] = useState<string[]>([]);
-  // const [collectionsArrayClicked,setCollectionArrayClicked] = useState<boolean[]>(() => Array(collections.length).fill(false));
+  const [openEditModal,setOpenEditModel] = useState<boolean>(false);
+  const [selectedDetails,setSelectedDetails] = useState<ItemSchema | null>(null)
   const handleCollectionAccordingFilter = () => {};
-
+  
   const fetchMyItems = async () => {  
     const response = await fetchGetMyCollection(user!.id!);
     console.log("data",response);
@@ -32,6 +33,28 @@ export function MyCollection() {
   },[])
 
 
+  const OnOpen = async () => {
+    if (selected.length === 0) return;
+    
+    setOpenEditModel(true); 
+    setSelectedDetails(null);
+  
+    try {
+      const result = await getOneItem(selected[0]);
+      if (result.data.success) {
+        setSelectedDetails(result.data.item);
+      } else {
+        console.error("Failed to fetch item details");
+        setOpenEditModel(false);
+      }
+    } catch (error) {
+      console.error("Error fetching item details:", error);
+      setOpenEditModel(false);
+    }
+  };
+      
+
+  
 
   const handleDeleteItem = async () => {
     console.log(collections);    
@@ -53,6 +76,20 @@ export function MyCollection() {
   const handleSelect = (ids: string[]) => {
     setSelected(ids)
   }
+
+  const handleEditItem = (selected: string[]) => {
+    console.log("selected",selected);
+    
+  }
+
+  const handleUpdateCollection = async () => {
+    await fetchMyItems();
+    setOpenEditModel(false); 
+    setSelectedDetails(null);
+  }
+  
+
+  const closeModal = () => setOpenEditModel(false);
 
   return (
     <div style={{ display: "flex", flexDirection: "row" }}>
@@ -76,11 +113,18 @@ export function MyCollection() {
             }}
           >
             <Button onClick={handleDeleteItem}>Delete item</Button>
-            {/* <Button onClick={hanedleEditItem}>Edit item</Button> */}
+            <Button onClick={OnOpen}>Edit item</Button>
 
           </div>
         </div>
       </div>
+      <ModalItem
+      isOpen={openEditModal}
+      onClose={closeModal}
+      updateOrAddItem={()=> handleEditItem(selected)}
+      item={selectedDetails}
+      onUpdateCollection={handleUpdateCollection}
+    /> 
     </div>
-  );
+       );
 }

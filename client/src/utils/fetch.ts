@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ItemSchemaCreate } from "../validations/itemSchema";
+import { ItemSchema, ItemSchemaCreate } from "../validations/itemSchema";
 
 export const fetch = async (data: ItemSchemaCreate) => {
   try {
@@ -36,11 +36,56 @@ export const fetch = async (data: ItemSchemaCreate) => {
   }
 };
 
+export const updateItem = async (item: ItemSchema) => {
+  try {
+    
+    const itemId = item.id;
+    const token = localStorage.getItem("token");
+
+    const result = await axios.put(
+      `http://localhost:9001/items/${itemId}`,
+      { item }, 
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return result;
+  } catch (e) {
+    console.error("Error updating item:", e);
+    throw e;
+  }
+};
 export const fetchGetItem = async () => {
   try {
+    console.log("fetchGetItem");
+    
     const token = localStorage.getItem("token");
 
     const result = await axios.get(`http://localhost:9001/items`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return result;
+  } catch (e) {
+    console.error("Error getting items:", e);
+    throw e;
+  }
+};
+
+export const getOneItem = async (itemId: string) => {
+  try {
+    console.log("getOneItem");
+    
+    const token = localStorage.getItem("token");
+
+    const result = await axios.get(`http://localhost:9001/items/${itemId}`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -78,6 +123,7 @@ export const fetchCollection = async () => {
 export const fetchGetMyCollection = async (userId: string) => {
   try {
     console.log("blabla");
+    console.log("blabla@blabla.com");
     
     const token = localStorage.getItem("token");
     console.log(`${import.meta.env.VITE_BACKEND_URL}items/my-items/${userId}`);

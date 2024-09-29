@@ -9,7 +9,7 @@ type ProtectedRouteProps = {
   
 export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({children}) => {
 
-    const {isAuthenticated,setIsAuthenticated} = useAuthStore();
+    const {isAuthenticated,setIsAuthenticated, user,setUserFromToken} = useAuthStore();
 
     console.log("isAuthenticatedisAuthenticatedisAuthenticated",isAuthenticated);
     
@@ -19,25 +19,17 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({children}) => {
             console.log("the valid is",valid);
             
             setIsAuthenticated(valid);
+            if (isAuthenticated) {
+              await setUserFromToken()
+            }
           };
 
         checkTokenValidity();
 
     },[setIsAuthenticated])
 
-    useEffect(()=> {
-        const checkTokenValidity = async () => {
-            const valid = await isTokenValid();
-            console.log("the valid is 'ןאיםוא מםאיןמע",valid);
-            
-            setIsAuthenticated(valid);
-          };
-
-        checkTokenValidity();
-
-    },[])
-
     console.log("isAuthenticated ProtectedRouteProps",isAuthenticated);
+    console.log("user stav",user);
     
     return (
         

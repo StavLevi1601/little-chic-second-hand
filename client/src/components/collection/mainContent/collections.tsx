@@ -21,15 +21,9 @@ export function Collections({ collections,onSelect,selectedIds,allowSelection  }
 
   const handleSelection = (id: string) => {
     if (!allowSelection) return; 
-    console.log("stav");
-    console.log("collection.id",id);
-    
-    console.log("isSelected(id)",isSelected(id));
     
     if (isSelected(id)) {
       const indexOfId = selectedIds.indexOf(id);
-      console.log('indexOfId: ', indexOfId);
-      
       const arrayWithoutIds =  [...selectedIds];
       arrayWithoutIds.splice(indexOfId,1);
       onSelect(arrayWithoutIds)
@@ -37,30 +31,6 @@ export function Collections({ collections,onSelect,selectedIds,allowSelection  }
       onSelect([...selectedIds,id])
     }
   }
-  // const [arrayClicked, setArrayClicked] = useState<boolean[]>(() => new Array(collections.length).fill(false));    
-  // const navigate = useNavigate();
-  // const location = useLocation();
-
-  // const isMyCollectionPage = location.pathname === "/my-collection";
-
-  // useEffect(() => {
-  //   if (!isMyCollectionPage) {
-  //     setArrayClicked(new Array(collections.length).fill(false));
-  //   }
-  // }, [isMyCollectionPage, collections]);
-
-  // const handleProductPage = (collection: ItemSchema, index: string) => {
-  //   if (isMyCollectionPage) {
-  //     setArrayClicked(prev => {
-  //       const newArray = [...prev];
-  //       newArray[index] = !newArray[index]; 
-  //       onSelect(newArray)
-  //       return newArray;
-  //     });
-  //   } else {
-  //     navigate(`/items/${collection.id}`);
-  //   }
-  // };
 
   return (
     <CollectionSubContainer>
