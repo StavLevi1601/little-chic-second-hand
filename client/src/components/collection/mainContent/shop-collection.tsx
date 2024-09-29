@@ -9,17 +9,15 @@ import {
   sortKeySchema,
 } from "../../../validations/itemSchema";
 import { fetchGetItem } from "../../../utils/fetch";
-import ModalAddItem from "../../items/modal-add-item";
 import { AddCollection } from "../topRightAction/add-collection";
 import { Collections } from "./collections";
+import ModalItem from "../../items/modal-item";
 
 export function ShopCollection() {
   const [sortType, setSortType] = useState<SortKey>(sortKeySchema[0]);
-  const [collectionsFilter, setCollectionsFilter] =
-    useState<ItemSchema[]>(collections);
+  const [collectionsFilter, setCollectionsFilter] =useState<ItemSchema[]>(collections);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
-
 
 
   useEffect(() => {
@@ -56,7 +54,11 @@ export function ShopCollection() {
     setCollectionsFilter(newCollections);
   };
 
-  const openModalAddItem = () => setIsOpenModal(true);
+  const openModalAddItem = () => {
+    setIsOpenModal(true);
+    
+  }
+
   const closeModalAddItem = () => setIsOpenModal(false);
 
   const handleUpdateAddingItem = (item: ItemSchema) => {
@@ -97,10 +99,10 @@ export function ShopCollection() {
           </div>
         </div>
       </div>
-      <ModalAddItem
+      <ModalItem
         isOpen={isOpenModal}
         onClose={closeModalAddItem}
-        updaeAddingItem={handleUpdateAddingItem}
+        updateOrAddItem={handleUpdateAddingItem}
       />
     </CollectionContainer>
   );

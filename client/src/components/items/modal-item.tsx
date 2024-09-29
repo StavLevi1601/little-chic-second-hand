@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import {
   Container,
   Modal,
@@ -16,37 +16,65 @@ import {
   ItemSchemaAddItem,
   itemsSchemaKeys,
 } from "../../validations/itemSchema";
-import { fetch } from "../../utils/fetch";
+import { fetch, updateItem } from "../../utils/fetch";
 import useAuthStore from "../../store/useAuthState";
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  updaeAddingItem: (item: ItemSchema) => void;
+  updateOrAddItem: (item: ItemSchema) => void;
+  item?: ItemSchema | null;
+  onUpdateCollection : () => void
 };
 
-export default function ModalAddItem({
+export default function ModalItem({
   isOpen,
   onClose,
-  updaeAddingItem,
+  updateOrAddItem,
+  item,
+  onUpdateCollection
 }: Props) {
-  const { register, reset, handleSubmit } = useForm<ItemSchemaAddItem>();
+  const { register, reset, handleSubmit, setValue } = useForm<ItemSchemaAddItem>();
   const [description, setDescription] = useState<string>("");
   const [price, setPrice] = useState<number>(0);
   const { user } = useAuthStore();
-  console.log(price);
+
+  const initializeFormValues = useCallback(() => {
+    console.log("item",item);
+
+    if (item) {
+      setDescription(item.description || "");
+      setPrice(item.price || 0);
+      Object.keys(item).forEach((key) => {
+        setValue(key as keyof ItemSchemaAddItem, item[key as keyof ItemSchema]);
+      });
+    } else {
+      reset();
+      setDescription("");
+      setPrice(0);
+    }
+  }, [item, setValue, reset]);
+
+  useEffect(() => {
+    if (isOpen) {
+      initializeFormValues();
+    }
+  }, [isOpen, initializeFormValues])
 
   const onSubmit = async (data: ItemSchemaAddItem) => {
     try {
-
-      data.seller_id = user!.id ? user!.id : "111";
-      const result = await fetch(data);
-      updaeAddingItem(result.item);
+      let result;
+      if (!item) {
+        data.seller_id = user!.id ? user!.id : "111";
+        result = await fetch(data);
+      } else {
+        result = await updateItem({ ...data, id: item.id, status: "available" });
+      }
+      updateOrAddItem(result.item);
+      onUpdateCollection();  
       onClose();
-      reset();
     } catch (e) {
-      console.error("Error adding item:", e);
-      throw e;
+      console.error("Error adding/updating item:", e);
     }
   };
 
@@ -58,7 +86,16 @@ export default function ModalAddItem({
 
   if (!isOpen) return null;
 
-  console.log("itemsSchemaKeys", itemsSchemaKeys);
+  if (!item) {
+    return (
+      <Container onClick={handleContainerClick}>
+        <Modal>
+          <p>Loading...</p>
+        </Modal>
+      </Container>
+    );
+  }
+
 
   return (
     <Container onClick={handleContainerClick}>
@@ -76,12 +113,12 @@ export default function ModalAddItem({
             }}
           >
             <Title style={{ marginBottom: "20px", fontSize: "24px" }}>
-              Add Item
+              {item ? "Edit Item" : "Add Item"}
             </Title>
 
             {itemsSchemaKeys.map((key) => (
               <div
-                key={key.toString()}
+                key={key}
                 style={{
                   display: "flex",
                   justifyContent: "space-around",
@@ -93,8 +130,8 @@ export default function ModalAddItem({
                 {key === "description" ? (
                   <TextArea
                     id={key}
-                    value={description}
                     {...register(key)}
+                    value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     required
                   />
@@ -103,6 +140,7 @@ export default function ModalAddItem({
                     id={key}
                     type="number"
                     {...register(key)}
+                    value={price}
                     onChange={(e) => setPrice(Number(e.target.value))}
                     required
                     style={{
@@ -133,17 +171,24 @@ export default function ModalAddItem({
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              width: "60%",
+              width: "40%",
               paddingLeft: "20px",
             }}
           >
-            <Label htmlFor="image" style={{ marginBottom: "280px" }}></Label>
+            <Label htmlFor="image" style={{ marginBottom: "20px" }}>Image</Label>
             <ImageInput
               id="image"
               type="file"
               accept="image/*"
               style={{ marginBottom: "20px" }}
             />
+            {item && item.image && (
+              <img 
+                src={item.image} 
+                alt="Current item" 
+                style={{ maxWidth: "100%", maxHeight: "200px", marginBottom: "20px" }}
+              />
+            )}
 
             <Button
               type="submit"
@@ -158,7 +203,7 @@ export default function ModalAddItem({
                 cursor: "pointer",
               }}
             >
-              Add Item
+              {item ? "Update Item" : "Add Item"}
             </Button>
           </div>
         </Form>

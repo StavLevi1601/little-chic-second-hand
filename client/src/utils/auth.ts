@@ -12,22 +12,23 @@ export const setToken = (token: string | null) => {
   };
   
   export const isTokenValid = async () => {
-    console.log("isTokenValid");
-    
     const token = getToken();
-    console.log("token",token);
-    
-    if (!token) return false;
+    if (!token) return { success: false, message: "No token found" };
   
     try {
       const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}auth/validate-token`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      console.log("response",response);
-      
-      return response.ok ? true : false;
+  
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Response data:", data);
+        return data; // החזרת כל אובייקט התגובה
+      }
+  
+      return { success: false, message: "Invalid response from server" };
     } catch (error) {
       console.error('Error validating token:', error);
-      return false;
+      return { success: false, message: "Error validating token" };
     }
   };
