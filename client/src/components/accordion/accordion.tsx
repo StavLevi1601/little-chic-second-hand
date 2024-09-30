@@ -1,6 +1,6 @@
-import { useMemo, useState } from "react";
-import { DividerWithText } from "../login/login.style";
-import { collections } from "../../mock/collection-shop";
+import { useMemo, useState } from 'react';
+import { DividerWithText } from '../login/login.style';
+import { collections } from '../../mock/collection-shop';
 import {
   AccordionItem,
   AccordionHeader,
@@ -9,7 +9,7 @@ import {
   AccordionContent,
   AccordionLabel,
   AccordionInput,
-} from "./accordion.style";
+} from './accordion.style';
 
 type Props = {
   title: string;
@@ -21,17 +21,13 @@ export function Accordion({ title, onFilterChange }: Props) {
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
 
   const unieuqValues = useMemo(() => {
-    const values = collections.map(
-      (collection) => collection[title as keyof typeof collection]
-    );
+    const values = collections.map((collection) => collection[title as keyof typeof collection]);
     return Array.from(new Set(values));
   }, [title]);
 
   const handleCheckboxChange = (value: string) => {
     setSelectedValues((prev) => {
-      const newValues = prev.includes(value)
-        ? prev.filter((v) => v !== value)
-        : [...prev, value];
+      const newValues = prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value];
       onFilterChange(title, newValues);
       return newValues;
     });
@@ -40,7 +36,7 @@ export function Accordion({ title, onFilterChange }: Props) {
     <AccordionItem>
       <AccordionHeader onClick={() => setIsActive(!isActive)}>
         <AccordionTitle>{title}</AccordionTitle>
-        <AccordionIcon>{isActive ? "-" : "+"}</AccordionIcon>
+        <AccordionIcon>{isActive ? '-' : '+'}</AccordionIcon>
       </AccordionHeader>
       {isActive && (
         <AccordionContent>

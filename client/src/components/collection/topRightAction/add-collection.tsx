@@ -1,4 +1,4 @@
-import { Button } from "../collection.style";
+import { Button } from '../collection.style';
 
 type Props = {
   onAddItem: () => void;

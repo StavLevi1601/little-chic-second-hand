@@ -1,13 +1,13 @@
-import { usePagination } from "../../../hooks/usePagination";
-import { ItemSchema } from "../../../validations/itemSchema";
-import { Table } from "../../table/table";
+import { usePagination } from '../../../hooks/usePagination';
+import { ItemSchema } from '../../../validations/itemSchema';
+import { Table } from '../../table/table';
 
 type Props = {
   items: ItemSchema[];
   isShowItems: boolean;
 };
 
-const columns = ["Title", "Body", "Price", "Size"];
+const columns = ['Title', 'Body', 'Price', 'Size'];
 
 export function GetCollection({ items, isShowItems }: Props) {
   const { getCurrentItems, nextPage, previousPage, currentPage, maxPages } =

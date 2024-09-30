@@ -1,11 +1,9 @@
-import { useParams } from "react-router-dom";
+import { useParams } from 'react-router-dom';
 
 export function ItemDetails() {
-    const { itemId } = useParams();
+  const { itemId } = useParams();
 
-    console.log("itemId",itemId);
-    
-    return (<div>
-        
-        </div>)
+  console.log('itemId', itemId);
+
+  return <div></div>;
 }

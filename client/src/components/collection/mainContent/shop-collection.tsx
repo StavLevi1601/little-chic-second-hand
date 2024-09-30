@@ -1,24 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { FilterCollection } from "../sidebar/filter-collection";
-import { collections, mockImage } from "../../../mock/collection-shop";
-import { CollectionContainer } from "./shop-collection.style";
-import { SortCollection } from "../topRightAction/sort-collection";
-import {
-  ItemSchema,
-  SortKey,
-  sortKeySchema,
-} from "../../../validations/itemSchema";
-import { fetchGetItem } from "../../../utils/fetch";
-import { AddCollection } from "../topRightAction/add-collection";
-import { Collections } from "./collections";
-import ModalItem from "../../items/modal-item";
+import React, { useEffect, useState } from 'react';
+import { FilterCollection } from '../sidebar/filter-collection';
+import { collections, mockImage } from '../../../mock/collection-shop';
+import { CollectionContainer } from './shop-collection.style';
+import { SortCollection } from '../topRightAction/sort-collection';
+import { ItemSchema, SortKey, sortKeySchema } from '../../../validations/itemSchema';
+import { fetchGetItem } from '../../../utils/fetch';
+import { AddCollection } from '../topRightAction/add-collection';
+import { Collections } from './collections';
+import ModalItem from '../../items/modal-item';
 
 export function ShopCollection() {
   const [sortType, setSortType] = useState<SortKey>(sortKeySchema[0]);
-  const [collectionsFilter, setCollectionsFilter] =useState<ItemSchema[]>(collections);
+  const [collectionsFilter, setCollectionsFilter] = useState<ItemSchema[]>(collections);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
-
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -27,9 +22,7 @@ export function ShopCollection() {
         const newItems = data.data
           .filter(
             (newItem: ItemSchema) =>
-              !prevCollections.some(
-                (prevCollection) => prevCollection.id === newItem.id
-              )
+              !prevCollections.some((prevCollection) => prevCollection.id === newItem.id)
           )
           .map((newItem: ItemSchema) => ({ ...newItem, image: mockImage }));
         return [...prevCollections, ...newItems];
@@ -42,9 +35,7 @@ export function ShopCollection() {
     setSortType(newSort);
   };
 
-  const handleCollectionAccordingFilter = (
-    filters: Record<string, string[]>
-  ) => {
+  const handleCollectionAccordingFilter = (filters: Record<string, string[]>) => {
     const newCollections = collections.filter((collection) => {
       return Object.entries(filters).every(([key, values]) => {
         if (values.length === 0) return true;
@@ -56,8 +47,7 @@ export function ShopCollection() {
 
   const openModalAddItem = () => {
     setIsOpenModal(true);
-    
-  }
+  };
 
   const closeModalAddItem = () => setIsOpenModal(false);
 
@@ -75,19 +65,24 @@ export function ShopCollection() {
       <div style={{ flex: 1 }}>
         <div
           style={{
-            display: "flex",
+            display: 'flex',
             // flexDirection: "column",
-            justifyContent: "flex-end",
-            padding: "20px",
+            justifyContent: 'flex-end',
+            padding: '20px',
           }}
         >
-          <Collections collections={collectionsFilter!} selectedIds={selectedIds} onSelect={handleSelect} allowSelection={false}/>
+          <Collections
+            collections={collectionsFilter!}
+            selectedIds={selectedIds}
+            onSelect={handleSelect}
+            allowSelection={false}
+          />
           <div
             style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "20px",
-              padding: "20px",
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '20px',
+              padding: '20px',
             }}
           >
             <AddCollection onAddItem={openModalAddItem} />

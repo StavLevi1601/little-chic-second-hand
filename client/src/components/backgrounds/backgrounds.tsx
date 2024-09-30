@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
-import background1 from "../../assets/images/backgrounds/background-child1.webp";
-import background2 from "../../assets/images/backgrounds/background-child2.webp";
-import background3 from "../../assets/images/backgrounds/background-child3.webp";
-import background4 from "../../assets/images/backgrounds/background-child4.jpg";
-import background5 from "../../assets/images/backgrounds/background-child5.jpg";
+import { useEffect, useState } from 'react';
+import background1 from '../../assets/images/backgrounds/background-child1.webp';
+import background2 from '../../assets/images/backgrounds/background-child2.webp';
+import background3 from '../../assets/images/backgrounds/background-child3.webp';
+import background4 from '../../assets/images/backgrounds/background-child4.jpg';
+import background5 from '../../assets/images/backgrounds/background-child5.jpg';
 
 const backgrounds = [
   `url(${background1})`,
@@ -30,11 +30,11 @@ export function AnimationBackgrounds() {
   return (
     <div
       style={{
-        marginTop: "20px",
-        height: "651px",
+        marginTop: '20px',
+        height: '651px',
         backgroundImage: backgrounds[currentBackground],
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "cover",
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
       }}
     ></div>
   );

@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const CollectionContainer = styled.div`
   display: flex;
@@ -14,14 +14,14 @@ export const CollectionSubContainer = styled.div`
 `;
 
 type CollectionImageProps = {
-  fontStyle: 'bold' | 'normal'
-  border: '2px solid gray' | 'none'
-}
+  fontStyle: 'bold' | 'normal';
+  border: '2px solid gray' | 'none';
+};
 export const CollectionImage = styled.img<CollectionImageProps>`
   object-fit: contain;
   width: 100%;
-  font-weight: ${props => props.fontStyle};
-  border: ${props => props.border};
+  font-weight: ${(props) => props.fontStyle};
+  border: ${(props) => props.border};
 `;
 
 export const CollectionDetails = styled.div`

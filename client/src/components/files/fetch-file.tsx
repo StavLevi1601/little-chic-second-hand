@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useState } from 'react';
+import axios from 'axios';
 
 const FetchFile: React.FC = () => {
   const [fileData, setFileData] = useState<string | ArrayBuffer | null>(null);
@@ -7,9 +7,9 @@ const FetchFile: React.FC = () => {
   const fetchFile = async () => {
     try {
       const response = await axios.get(
-        "https://items-store-little-chic.s3.eu-central-1.amazonaws.com/1527177048246.jpeg",
+        'https://items-store-little-chic.s3.eu-central-1.amazonaws.com/1527177048246.jpeg',
         {
-          responseType: "arraybuffer", // Depending on the file type, you might use different response types
+          responseType: 'arraybuffer', // Depending on the file type, you might use different response types
         }
       );
 
@@ -21,7 +21,7 @@ const FetchFile: React.FC = () => {
       // const blob = new Blob([response.data], { type: 'application/octet-stream' });
       // setFileData(URL.createObjectURL(blob));
     } catch (error) {
-      console.error("Failed to fetch file:", error);
+      console.error('Failed to fetch file:', error);
     }
   };
 
