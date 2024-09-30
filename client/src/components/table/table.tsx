@@ -1,4 +1,4 @@
-import { ItemSchema } from "../../validations/itemSchema";
+import { ItemSchema } from '../../validations/itemSchema';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 type Props<T> = {
@@ -31,9 +31,7 @@ export function Table<T>({
         {getCurrentItems().map((item, index) => (
           <tr key={index}>
             {columns.map((column) => (
-              <td key={column}>
-                {item[column.toLowerCase() as keyof ItemSchema]}
-              </td>
+              <td key={column}>{item[column.toLowerCase() as keyof ItemSchema]}</td>
             ))}
           </tr>
         ))}

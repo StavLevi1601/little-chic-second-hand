@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export const itemSchema = z.object({
   id: z.string(),
@@ -9,7 +9,7 @@ export const itemSchema = z.object({
     .number()
     .positive()
     .refine((price) => {
-      const decimalNumber = (price.toString().split(".")[1] || "").length;
+      const decimalNumber = (price.toString().split('.')[1] || '').length;
       return decimalNumber >= 2;
     }),
   color: z.string(),
@@ -47,9 +47,9 @@ export const itemSchemaFilter = itemSchema.omit({
   description: true,
 });
 
-export const itemsSchemaFilterKeys = Object.keys(
-  itemSchemaFilter.shape
-) as Array<keyof typeof itemSchemaFilter.shape>;
+export const itemsSchemaFilterKeys = Object.keys(itemSchemaFilter.shape) as Array<
+  keyof typeof itemSchemaFilter.shape
+>;
 
 export const itemSchemaSortItems = itemSchema.omit({
   id: true,

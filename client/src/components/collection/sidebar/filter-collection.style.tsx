@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const FilterText = styled.div`
   font-family: ${({ theme }) => theme.fonts.secondary};

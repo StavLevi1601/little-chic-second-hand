@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Container,
   Modal,
@@ -9,15 +9,11 @@ import {
   ImageInput,
   TextArea,
   Button,
-} from "./modal-add-item.style";
-import { useForm } from "react-hook-form";
-import {
-  ItemSchema,
-  ItemSchemaAddItem,
-  itemsSchemaKeys,
-} from "../../validations/itemSchema";
-import { fetch } from "../../utils/fetch";
-import useAuthStore from "../../store/useAuthState";
+} from './modal-add-item.style';
+import { useForm } from 'react-hook-form';
+import { ItemSchema, ItemSchemaAddItem, itemsSchemaKeys } from '../../validations/itemSchema';
+import { fetch } from '../../utils/fetch';
+import useAuthStore from '../../store/useAuthState';
 
 type Props = {
   isOpen: boolean;
@@ -25,27 +21,22 @@ type Props = {
   updaeAddingItem: (item: ItemSchema) => void;
 };
 
-export default function ModalAddItem({
-  isOpen,
-  onClose,
-  updaeAddingItem,
-}: Props) {
+export default function ModalAddItem({ isOpen, onClose, updaeAddingItem }: Props) {
   const { register, reset, handleSubmit } = useForm<ItemSchemaAddItem>();
-  const [description, setDescription] = useState<string>("");
+  const [description, setDescription] = useState<string>('');
   const [price, setPrice] = useState<number>(0);
   const { user } = useAuthStore();
   console.log(price);
 
   const onSubmit = async (data: ItemSchemaAddItem) => {
     try {
-
-      data.seller_id = user!.id ? user!.id : "111";
+      data.seller_id = user!.id ? user!.id : '111';
       const result = await fetch(data);
       updaeAddingItem(result.item);
       onClose();
       reset();
     } catch (e) {
-      console.error("Error adding item:", e);
+      console.error('Error adding item:', e);
       throw e;
     }
   };
@@ -58,39 +49,37 @@ export default function ModalAddItem({
 
   if (!isOpen) return null;
 
-  console.log("itemsSchemaKeys", itemsSchemaKeys);
+  console.log('itemsSchemaKeys', itemsSchemaKeys);
 
   return (
     <Container onClick={handleContainerClick}>
       <Modal>
         <Form
           onSubmit={handleSubmit(onSubmit)}
-          style={{ display: "flex", flexDirection: "row", width: "100%" }}
+          style={{ display: 'flex', flexDirection: 'row', width: '100%' }}
         >
           <div
             style={{
-              flexDirection: "column",
-              display: "flex",
-              width: "60%",
-              paddingRight: "20px",
+              flexDirection: 'column',
+              display: 'flex',
+              width: '60%',
+              paddingRight: '20px',
             }}
           >
-            <Title style={{ marginBottom: "20px", fontSize: "24px" }}>
-              Add Item
-            </Title>
+            <Title style={{ marginBottom: '20px', fontSize: '24px' }}>Add Item</Title>
 
             {itemsSchemaKeys.map((key) => (
               <div
                 key={key.toString()}
                 style={{
-                  display: "flex",
-                  justifyContent: "space-around",
+                  display: 'flex',
+                  justifyContent: 'space-around',
                 }}
               >
-                <Label htmlFor={key} style={{ marginTop: "40px" }}>
+                <Label htmlFor={key} style={{ marginTop: '40px' }}>
                   {key}
                 </Label>
-                {key === "description" ? (
+                {key === 'description' ? (
                   <TextArea
                     id={key}
                     value={description}
@@ -98,7 +87,7 @@ export default function ModalAddItem({
                     onChange={(e) => setDescription(e.target.value)}
                     required
                   />
-                ) : key === "price" ? (
+                ) : key === 'price' ? (
                   <Input
                     id={key}
                     type="number"
@@ -106,9 +95,9 @@ export default function ModalAddItem({
                     onChange={(e) => setPrice(Number(e.target.value))}
                     required
                     style={{
-                      marginBottom: "20px",
-                      padding: "10px",
-                      fontSize: "16px",
+                      marginBottom: '20px',
+                      padding: '10px',
+                      fontSize: '16px',
                     }}
                   />
                 ) : (
@@ -118,9 +107,9 @@ export default function ModalAddItem({
                     {...register(key)}
                     required
                     style={{
-                      marginBottom: "20px",
-                      padding: "10px",
-                      fontSize: "16px",
+                      marginBottom: '20px',
+                      padding: '10px',
+                      fontSize: '16px',
                     }}
                   />
                 )}
@@ -130,32 +119,27 @@ export default function ModalAddItem({
 
           <div
             style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              width: "60%",
-              paddingLeft: "20px",
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              width: '60%',
+              paddingLeft: '20px',
             }}
           >
-            <Label htmlFor="image" style={{ marginBottom: "280px" }}></Label>
-            <ImageInput
-              id="image"
-              type="file"
-              accept="image/*"
-              style={{ marginBottom: "20px" }}
-            />
+            <Label htmlFor="image" style={{ marginBottom: '280px' }}></Label>
+            <ImageInput id="image" type="file" accept="image/*" style={{ marginBottom: '20px' }} />
 
             <Button
               type="submit"
               style={{
-                marginTop: "auto",
-                padding: "10px 20px",
-                fontSize: "16px",
-                backgroundColor: "#007bff",
-                color: "#fff",
-                border: "none",
-                borderRadius: "4px",
-                cursor: "pointer",
+                marginTop: 'auto',
+                padding: '10px 20px',
+                fontSize: '16px',
+                backgroundColor: '#007bff',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: 'pointer',
               }}
             >
               Add Item

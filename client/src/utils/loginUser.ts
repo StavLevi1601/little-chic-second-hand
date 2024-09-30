@@ -1,5 +1,5 @@
-import axios from "axios";
-import { LoginSchema } from "../validations/loginSchema";
+import axios from 'axios';
+import { LoginSchema } from '../validations/loginSchema';
 
 export const loginUser = async ({ email, password }: LoginSchema) => {
   try {
@@ -21,12 +21,12 @@ export const loginUser = async ({ email, password }: LoginSchema) => {
           },
         }
       );
-      localStorage.setItem("token", auth.data.token);
+      localStorage.setItem('token', auth.data.token);
 
       return result;
     }
   } catch (error) {
-    console.error("Error registering user:", error);
+    console.error('Error registering user:', error);
     throw error;
   }
 };

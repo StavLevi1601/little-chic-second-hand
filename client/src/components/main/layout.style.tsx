@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { Link } from "react-router-dom";
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 export const StyledLink = styled(Link)`
   padding: 31px;
@@ -16,7 +16,7 @@ export const Container = styled.div`
   margin: 0 auto;
   justify-content: center;
   padding-top: 60px;
-  flex-direction: "column";
+  flex-direction: 'column';
 `;
 
 export const Header = styled.div`

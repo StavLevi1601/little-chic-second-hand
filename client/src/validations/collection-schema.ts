@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export const itemSchema = z.object({
   name: z.string(),
@@ -8,7 +8,7 @@ export const itemSchema = z.object({
     .number()
     .positive()
     .refine((price) => {
-      const decimalNumber = (price.toString().split(".")[1] || "").length;
+      const decimalNumber = (price.toString().split('.')[1] || '').length;
       return decimalNumber >= 2;
     }),
   color: z.string(),

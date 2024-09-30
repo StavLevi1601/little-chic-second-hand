@@ -1,23 +1,20 @@
-import { useEffect, useMemo, useState } from "react";
-import { Button, Container, Header, SearchingRow } from "./welcome.style";
-import ModalAddItem from "../items/modal-add-item";
+import { useEffect, useMemo, useState } from 'react';
+import { Button, Container, Header, SearchingRow } from './welcome.style';
+import ModalAddItem from '../items/modal-add-item';
 
-import { DividerWithText } from "../login/login.style";
-import { ItemSchema, SortKey, itemSchema } from "../../validations/itemSchema";
-import { fetchGetItem } from "../../utils/fetch";
-import { collections } from "../../mock/collection-shop";
+import { DividerWithText } from '../login/login.style';
+import { ItemSchema, SortKey, itemSchema } from '../../validations/itemSchema';
+import { fetchGetItem } from '../../utils/fetch';
+import { collections } from '../../mock/collection-shop';
 
-const sortKeys = Object.keys(itemSchema.shape) as unknown as Array<
-  keyof ItemSchema
->;
+const sortKeys = Object.keys(itemSchema.shape) as unknown as Array<keyof ItemSchema>;
 
 function Welcome() {
   const [isOpenModal, setIsOpenModal] = useState(false);
 
   const [sortType, setSortType] = useState<SortKey>(sortKeys[0]);
   const [isShowItems, setIsShowItems] = useState<boolean>(false);
-  const [collectionsShop, setCollectionsShop] =
-    useState<ItemSchema[]>(collections);
+  const [collectionsShop, setCollectionsShop] = useState<ItemSchema[]>(collections);
 
   const filteredItems = useMemo(
     () =>
@@ -34,7 +31,7 @@ function Welcome() {
     [collectionsShop, sortType]
   );
 
-  console.log("filteredItems", filteredItems);
+  console.log('filteredItems', filteredItems);
 
   useEffect(() => {
     const fetchITems = async () => {
@@ -42,10 +39,9 @@ function Welcome() {
 
       setCollectionsShop((prevCollections) => {
         const newItems = data.data.filter((newItem: ItemSchema) => {
-          if ("id" in newItem) {
+          if ('id' in newItem) {
             return !prevCollections.some(
-              (existingItem) =>
-                "id" in existingItem && existingItem.id === newItem.id
+              (existingItem) => 'id' in existingItem && existingItem.id === newItem.id
             );
           }
         });
@@ -70,20 +66,19 @@ function Welcome() {
   };
 
   const handleUpdateAddingItem = (item: ItemSchema) => {
-    console.log("update", item);
+    console.log('update', item);
     setCollectionsShop((prevCollections) => {
       return [...prevCollections, item];
     });
-    console.log("collectionsShop", collectionsShop);
+    console.log('collectionsShop', collectionsShop);
   };
 
   const addItemsToCollections = () => {
     setCollectionsShop((prevCollections) => {
       const newItems = filteredItems.filter((newItem) => {
-        if ("id" in newItem) {
+        if ('id' in newItem) {
           return !prevCollections.some(
-            (existingItem) =>
-              "id" in existingItem && existingItem.id === newItem.id
+            (existingItem) => 'id' in existingItem && existingItem.id === newItem.id
           );
         }
       });
@@ -92,15 +87,15 @@ function Welcome() {
   };
 
   return (
-    <Container style={{ flexDirection: "column" }}>
-      <div style={{ display: "flex", flexDirection: "column" }}>
+    <Container style={{ flexDirection: 'column' }}>
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
         <Header>Little Chic</Header>
-        <SearchingRow style={{ display: "flex", justifyContent: "center" }}>
+        <SearchingRow style={{ display: 'flex', justifyContent: 'center' }}>
           <Button onClick={showItems}>Shop Collection</Button>
           <Button onClick={() => setIsShowItems(false)}>Our Story</Button>
           <Button>Gift Card</Button>
           <Button onClick={openModalAddItem}>Add item</Button>
-          <Button onClick={() => console.log("gdf")}>My items</Button>
+          <Button onClick={() => console.log('gdf')}>My items</Button>
         </SearchingRow>
         {isShowItems && <DividerWithText />}
       </div>

@@ -1,6 +1,6 @@
-import { create } from "zustand";
-import { LoginSchema } from "../validations/loginSchema";
-import { getToken, isTokenValid, removeToken, setToken } from "../utils/auth";
+import { create } from 'zustand';
+import { LoginSchema } from '../validations/loginSchema';
+import { getToken, isTokenValid, removeToken, setToken } from '../utils/auth';
 
 interface AuthState {
   isAuthenticated: boolean;
@@ -34,8 +34,8 @@ const useAuthStore = create<AuthState>((set) => ({
     if (token) {
       try {
         const isValid = await isTokenValid();
-        console.log("isValid stav",isValid);
-        
+        console.log('isValid stav', isValid);
+
         if (isValid.success) {
           set({ user: isValid.user, isAuthenticated: true });
         } else {
