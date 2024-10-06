@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Icon } from '@iconify/react';
 import pencilOutline from '@iconify-icons/mdi/pencil-circle';
 import { mockImage } from '../../../mock/collection-shop';
 import { ItemSchema } from '../../../validations/itemSchema';
@@ -9,6 +8,7 @@ import {
   CollectionImage,
   CollectionSubContainer,
 } from './shop-collection.style';
+import { StyledEditIcon } from './collections.styled';
 
 type Props = {
   collections: ItemSchema[];
@@ -16,7 +16,7 @@ type Props = {
   selectedIds: string[];
   allowSelection: boolean;
   isMyCollection: boolean;
-  onEditClick: (item: ItemSchema) => void;
+  onEditClick?: (item: ItemSchema) => void;
 };
 
 export function Collections({
@@ -53,22 +53,13 @@ export function Collections({
 
   const handleEditClick = (e: React.MouseEvent, item: ItemSchema) => {
     e.stopPropagation();
-    onEditClick(item);
+    if (onEditClick && item) {
+      onEditClick(item);
+    }
   };
 
   const editIcon = (item: ItemSchema) => (
-    <Icon
-      icon={pencilOutline}
-      onClick={(e) => handleEditClick(e, item)}
-      style={{
-        position: 'absolute',
-        top: '10px',
-        right: '10px',
-        cursor: 'pointer',
-        fontSize: '24px',
-        zIndex: 2,
-      }}
-    />
+    <StyledEditIcon icon={pencilOutline} onClick={(e) => handleEditClick(e, item)} />
   );
 
   return (
@@ -78,6 +69,8 @@ export function Collections({
           key={collection.id}
           onMouseOver={() => handleOver(collection.id)}
           onMouseLeave={handleLeave}
+          transform={hoveredId === collection.id ? 'scale(1.2)' : 'scale(1)'}
+          transition="transform 0.3s ease-in-out"
           style={{
             transform: hoveredId === collection.id ? 'scale(1.2)' : 'scale(1)',
             transition: 'transform 0.3s ease-in-out',

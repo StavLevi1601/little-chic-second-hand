@@ -2,10 +2,10 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   display: flex;
-  margin: 0 auto;
-  justify-content: center;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
   padding-top: 60px;
-  flex-direction: 'column';
 `;
 
 export const Header = styled.div`
@@ -17,10 +17,11 @@ export const Header = styled.div`
 `;
 
 export const SearchingRow = styled.div`
-  padding-top: 10px;
   display: flex;
-  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   gap: 60px;
+  margin: 20px 0;
 `;
 
 export const Button = styled.div`

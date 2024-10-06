@@ -24,10 +24,20 @@ export const CollectionImage = styled.img<CollectionImageProps>`
   border: ${(props) => props.border};
 `;
 
-export const CollectionDetails = styled.div`
+type CollectionDetailsProps = {
+  transform: 'scale(1.2)' | 'scale(1)';
+  transition: 'transform 0.3s ease-in-out';
+};
+
+export const CollectionDetails = styled.div<CollectionDetailsProps>`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  transform: ${(props) => props.transform}
+  transition: ${(props) => props.transition}
 `;
+
+// transform: hoveredId === collection.id ? 'scale(1.2)' : 'scale(1)',
+// transition: 'transform 0.3s ease-in-out',
