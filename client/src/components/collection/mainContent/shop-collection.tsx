@@ -59,6 +59,8 @@ export function ShopCollection() {
     setSelectedIds(ids);
   };
 
+  const handleUpdateCollection = () => {};
+
   return (
     <CollectionContainer>
       <FilterCollection onFilter={handleCollectionAccordingFilter} />
@@ -76,6 +78,7 @@ export function ShopCollection() {
             selectedIds={selectedIds}
             onSelect={handleSelect}
             allowSelection={false}
+            isMyCollection={false}
           />
           <div
             style={{
@@ -98,6 +101,7 @@ export function ShopCollection() {
         isOpen={isOpenModal}
         onClose={closeModalAddItem}
         updateOrAddItem={handleUpdateAddingItem}
+        onUpdateCollection={handleUpdateCollection}
       />
     </CollectionContainer>
   );

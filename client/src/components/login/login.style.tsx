@@ -1,9 +1,21 @@
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 
+export const GlobalStyle = createGlobalStyle`
+  html, body {
+    overflow: hidden;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+`;
 export const Container = styled.div`
   padding: 20px;
   max-width: 320px;
-  margin: 412px auto;
+  margin: 0 auto;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
 
 export const Header = styled.div`
