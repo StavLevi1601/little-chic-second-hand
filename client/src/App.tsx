@@ -7,6 +7,7 @@ import { MyCollection } from './components/collection/mainContent/my-collection'
 import { ItemDetails } from './components/items/item-details';
 import { ProtectedRoute } from './components/protected/protected-route';
 import NotFound from './components/not-found';
+import { OurStory } from './our-story/our-story';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="collection" element={<ShopCollection />} />
           <Route path="my-collection" element={<MyCollection />} />
           <Route path="items/:itemId" element={<ItemDetails />} />
+          <Route path="our-story" element={<OurStory />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
