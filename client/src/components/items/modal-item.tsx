@@ -9,7 +9,10 @@ import {
   ImageInput,
   TextArea,
   Button,
-} from './modal-add-item.style';
+  LeftColumn,
+  RightColumn,
+  CloseButton,
+} from './modal-item.style';
 import { useForm } from 'react-hook-form';
 import { ItemSchema, ItemSchemaAddItem, itemsSchemaKeys } from '../../validations/itemSchema';
 import { fetch, updateItem } from '../../utils/fetch';
@@ -33,14 +36,14 @@ export default function ModalItem({
   const { register, reset, handleSubmit, setValue } = useForm<ItemSchemaAddItem>();
   const [description, setDescription] = useState<string>('');
   const [price, setPrice] = useState<number>(0);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const { user } = useAuthStore();
 
   const initializeFormValues = useCallback(() => {
-    console.log('item', item);
-
     if (item) {
       setDescription(item.description || '');
       setPrice(item.price || 0);
+      setImagePreview(item.image || null);
       Object.keys(item).forEach((key) => {
         setValue(key as keyof ItemSchemaAddItem, item[key as keyof ItemSchema]);
       });
@@ -48,6 +51,7 @@ export default function ModalItem({
       reset();
       setDescription('');
       setPrice(0);
+      setImagePreview(null);
     }
   }, [item, setValue, reset]);
 
@@ -74,44 +78,29 @@ export default function ModalItem({
     }
   };
 
-  const handleContainerClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target === e.currentTarget) {
-      onClose();
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
   if (!isOpen) return null;
 
   return (
-    <Container onClick={handleContainerClick}>
+    <Container>
       <Modal>
-        <Form
-          onSubmit={handleSubmit(onSubmit)}
-          style={{ display: 'flex', flexDirection: 'row', width: '100%' }}
-        >
-          <div
-            style={{
-              flexDirection: 'column',
-              display: 'flex',
-              width: '60%',
-              paddingRight: '20px',
-            }}
-          >
-            <Title style={{ marginBottom: '20px', fontSize: '24px' }}>
-              {item ? 'Edit Item' : 'Add Item'}
-            </Title>
-
+        <CloseButton onClick={onClose}>&times;</CloseButton>
+        <Title>{item ? 'Edit Item' : 'Add Item'}</Title>
+        <Form onSubmit={handleSubmit(onSubmit)}>
+          <LeftColumn>
             {itemsSchemaKeys.map((key) => (
-              <div
-                key={key}
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-around',
-                }}
-              >
-                <Label htmlFor={key} style={{ marginTop: '40px' }}>
-                  {key}
-                </Label>
+              <div key={key}>
+                <Label htmlFor={key}>{key.charAt(0).toUpperCase() + key.slice(1)}</Label>
                 {key === 'description' ? (
                   <TextArea
                     id={key}
@@ -128,66 +117,25 @@ export default function ModalItem({
                     value={price}
                     onChange={(e) => setPrice(Number(e.target.value))}
                     required
-                    style={{
-                      marginBottom: '20px',
-                      padding: '10px',
-                      fontSize: '16px',
-                    }}
                   />
                 ) : (
-                  <Input
-                    id={key}
-                    type="text"
-                    {...register(key)}
-                    required
-                    style={{
-                      marginBottom: '20px',
-                      padding: '10px',
-                      fontSize: '16px',
-                    }}
-                  />
+                  <Input id={key} type="text" {...register(key)} required />
                 )}
               </div>
             ))}
-          </div>
-
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              width: '40%',
-              paddingLeft: '20px',
-            }}
-          >
-            <Label htmlFor="image" style={{ marginBottom: '20px' }}>
-              Image
-            </Label>
-            <ImageInput id="image" type="file" accept="image/*" style={{ marginBottom: '20px' }} />
-            {item && item.image && (
+          </LeftColumn>
+          <RightColumn>
+            <Label htmlFor="image">Image</Label>
+            <ImageInput id="image" type="file" accept="image/*" onChange={handleImageChange} />
+            {imagePreview && (
               <img
-                src={item.image}
-                alt="Current item"
-                style={{ maxWidth: '100%', maxHeight: '200px', marginBottom: '20px' }}
+                src={imagePreview}
+                alt="Item preview"
+                style={{ maxWidth: '100%', maxHeight: '200px', marginTop: '10px' }}
               />
             )}
-
-            <Button
-              type="submit"
-              style={{
-                marginTop: 'auto',
-                padding: '10px 20px',
-                fontSize: '16px',
-                backgroundColor: '#007bff',
-                color: '#fff',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer',
-              }}
-            >
-              {item ? 'Update Item' : 'Add Item'}
-            </Button>
-          </div>
+            <Button type="submit">{item ? 'Update Item' : 'Add Item'}</Button>
+          </RightColumn>
         </Form>
       </Modal>
     </Container>
