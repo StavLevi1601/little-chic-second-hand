@@ -4,6 +4,7 @@ import background2 from '../../assets/images/backgrounds/background-child2.webp'
 import background3 from '../../assets/images/backgrounds/background-child3.webp';
 import background4 from '../../assets/images/backgrounds/background-child4.jpg';
 import background5 from '../../assets/images/backgrounds/background-child5.jpg';
+import { BackgroundAnimation } from './backgrounds.style';
 
 const backgrounds = [
   `url(${background1})`,
@@ -27,15 +28,5 @@ export function AnimationBackgrounds() {
     return () => clearInterval(interval);
   });
 
-  return (
-    <div
-      style={{
-        marginTop: '20px',
-        height: '651px',
-        backgroundImage: backgrounds[currentBackground],
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover',
-      }}
-    ></div>
-  );
+  return <BackgroundAnimation backgroundImage={backgrounds[currentBackground]} />;
 }

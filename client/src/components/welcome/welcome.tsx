@@ -87,18 +87,16 @@ function Welcome() {
   };
 
   return (
-    <Container style={{ flexDirection: 'column' }}>
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <Header>Little Chic</Header>
-        <SearchingRow style={{ display: 'flex', justifyContent: 'center' }}>
-          <Button onClick={showItems}>Shop Collection</Button>
-          <Button onClick={() => setIsShowItems(false)}>Our Story</Button>
-          <Button>Gift Card</Button>
-          <Button onClick={openModalAddItem}>Add item</Button>
-          <Button onClick={() => console.log('gdf')}>My items</Button>
-        </SearchingRow>
-        {isShowItems && <DividerWithText />}
-      </div>
+    <Container>
+      <Header>Little Chic</Header>
+      <SearchingRow>
+        <Button onClick={showItems}>Shop Collection</Button>
+        <Button onClick={() => setIsShowItems(false)}>Our Story</Button>
+        <Button>Gift Card</Button>
+        <Button onClick={openModalAddItem}>Add item</Button>
+        <Button onClick={() => console.log('gdf')}>My items</Button>
+      </SearchingRow>
+      {isShowItems && <DividerWithText />}
       {/* {!isShowItems ? (
         <AnimationBackgrounds isShowItems={isShowItems} />
       ) : (
