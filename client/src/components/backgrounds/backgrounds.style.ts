@@ -11,4 +11,5 @@ export const BackgroundAnimation = styled.div<BackgroundAnimationProps>`
   background-repeat: no-repeat;
   background-size: cover;
   transition: background-image 0.5s ease-in-out;
+  margin-bottom: 45px;
 `;

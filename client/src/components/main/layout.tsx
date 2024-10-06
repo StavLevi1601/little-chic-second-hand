@@ -14,7 +14,7 @@ function Layout() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const validPaths = ['/collection', '/my-collection', '/items', '/'];
+    const validPaths = ['/collection', '/my-collection', '/items', '/our-story', '/'];
     const isValid = validPaths.some((path) => location.pathname.startsWith(path));
     setIsValidRoute(isValid);
 
