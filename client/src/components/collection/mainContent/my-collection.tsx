@@ -12,7 +12,7 @@ export function MyCollection() {
   const { user } = useAuthStore();
   const [collections, setCollections] = useState<ItemSchema[]>([]);
   const [selected, setSelected] = useState<string[]>([]);
-  const [openEditModal, setOpenEditModel] = useState<boolean>(false);
+  const [openEditModal, setOpenEditModal] = useState<boolean>(false);
   const [selectedDetails, setSelectedDetails] = useState<ItemSchema | null>(null);
   const handleCollectionAccordingFilter = () => {};
 
@@ -34,7 +34,7 @@ export function MyCollection() {
   const OnOpen = async () => {
     if (selected.length === 0) return;
 
-    setOpenEditModel(true);
+    setOpenEditModal(true);
     setSelectedDetails(null);
 
     try {
@@ -43,11 +43,11 @@ export function MyCollection() {
         setSelectedDetails(result.data.item);
       } else {
         console.error('Failed to fetch item details');
-        setOpenEditModel(false);
+        setOpenEditModal(false);
       }
     } catch (error) {
       console.error('Error fetching item details:', error);
-      setOpenEditModel(false);
+      setOpenEditModal(false);
     }
   };
 
@@ -78,11 +78,16 @@ export function MyCollection() {
 
   const handleUpdateCollection = async () => {
     await fetchMyItems();
-    setOpenEditModel(false);
+    setOpenEditModal(false);
     setSelectedDetails(null);
   };
 
-  const closeModal = () => setOpenEditModel(false);
+  const closeModal = () => setOpenEditModal(false);
+
+  const handleEditClick = async (item: ItemSchema) => {
+    setOpenEditModal(true);
+    setSelectedDetails(item);
+  };
 
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -101,6 +106,8 @@ export function MyCollection() {
             onSelect={handleSelect}
             selectedIds={selected}
             allowSelection={true}
+            isMyCollection={true}
+            onEditClick={handleEditClick}
           />
           <div
             style={{
