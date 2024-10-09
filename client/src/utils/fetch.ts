@@ -138,13 +138,15 @@ export const fetchGetMyCollection = async (userId: string) => {
   }
 };
 
-export const deleteSpesificCollection = async (collectionsDelete: string[]) => {
+export const deleteSpesificCollection = async (collectionDelete: string) => {
   try {
+    console.log('collectionDelete', collectionDelete);
+
     const token = localStorage.getItem('token');
     console.log(`${import.meta.env.VITE_BACKEND_URL}items/delete/`);
 
     const result = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}items`, {
-      data: collectionsDelete,
+      data: { ids: [collectionDelete] }, // שלח כאובייקט עם מערך
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,

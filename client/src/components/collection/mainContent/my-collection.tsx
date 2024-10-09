@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { FilterCollection } from '../sidebar/filter-collection';
 import { Collections } from './collections';
-import { deleteSpesificCollection, fetchGetMyCollection, getOneItem } from '../../../utils/fetch';
+import { deleteSpesificCollection, fetchGetMyCollection } from '../../../utils/fetch';
 import useAuthStore from '../../../store/useAuthState';
 import { ItemSchema } from '../../../validations/itemSchema';
-import { Button } from '../collection.style';
 import ModalItem from '../../items/modal-item';
+import { HeaderCollection } from './my-collection.style';
 // import { useNavigate } from "react-router-dom";
 
 export function MyCollection() {
@@ -31,31 +31,31 @@ export function MyCollection() {
     asyncFetch();
   }, []);
 
-  const OnOpen = async () => {
-    if (selected.length === 0) return;
+  // const OnOpen = async () => {
+  //   if (selected.length === 0) return;
 
-    setOpenEditModal(true);
-    setSelectedDetails(null);
+  //   setOpenEditModal(true);
+  //   setSelectedDetails(null);
+
+  //   try {
+  //     const result = await getOneItem(selected[0]);
+  //     if (result.data.success) {
+  //       setSelectedDetails(result.data.item);
+  //     } else {
+  //       console.error('Failed to fetch item details');
+  //       setOpenEditModal(false);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching item details:', error);
+  //     setOpenEditModal(false);
+  //   }
+  // };
+
+  const handleDeleteClick = async (item: ItemSchema) => {
+    console.log(item);
 
     try {
-      const result = await getOneItem(selected[0]);
-      if (result.data.success) {
-        setSelectedDetails(result.data.item);
-      } else {
-        console.error('Failed to fetch item details');
-        setOpenEditModal(false);
-      }
-    } catch (error) {
-      console.error('Error fetching item details:', error);
-      setOpenEditModal(false);
-    }
-  };
-
-  const handleDeleteItem = async () => {
-    console.log(collections);
-
-    try {
-      const result = await deleteSpesificCollection(selected);
+      const result = await deleteSpesificCollection(item.id);
       if (result.data.success) {
         await fetchMyItems();
         console.log('Items deleted successfully');
@@ -90,13 +90,12 @@ export function MyCollection() {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'row' }}>
+    <HeaderCollection>
       <FilterCollection onFilter={handleCollectionAccordingFilter} />
       <div style={{ flex: 1 }}>
         <div
           style={{
             display: 'flex',
-            // flexDirection: "column",
             justifyContent: 'flex-end',
             padding: '20px',
           }}
@@ -108,18 +107,8 @@ export function MyCollection() {
             allowSelection={true}
             isMyCollection={true}
             onEditClick={handleEditClick}
+            onDeleteClick={handleDeleteClick}
           />
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '20px',
-              padding: '20px',
-            }}
-          >
-            <Button onClick={handleDeleteItem}>Delete item</Button>
-            <Button onClick={OnOpen}>Edit item</Button>
-          </div>
         </div>
       </div>
       <ModalItem
@@ -129,6 +118,6 @@ export function MyCollection() {
         item={selectedDetails}
         onUpdateCollection={handleUpdateCollection}
       />
-    </div>
+    </HeaderCollection>
   );
 }

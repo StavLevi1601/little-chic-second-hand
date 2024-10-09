@@ -52,7 +52,7 @@ router.post("/", async (req, res) => {
     data.status = "available";
 
     const validateData = itemSchema.safeParse(data);
-    
+
     if (!validateData.success) {
       return res.status(400).json({
         message: validateData.error.message,
@@ -84,10 +84,10 @@ router.post("/", async (req, res) => {
 
 router.get("/:itemId", async (req, res) => {
   try {
-    console.log("req.params",req.params);
+    console.log("req.params", req.params);
     const { itemId } = req.params;
     const item = await Items.findOne({ id: itemId });
-    console.log("item",item);
+    console.log("item", item);
     if (!item) {
       return res.status(404).json({
         message: "item not found",
@@ -110,9 +110,9 @@ router.get("/my-items/:userId", async (req, res) => {
   try {
     console.log("ffff");
     const { userId } = req.params;
-    console.log("userId",req.params);
+    console.log("userId", req.params);
     const items = await Items.find({ seller_id: userId });
-    console.log("itemsitems",items);
+    console.log("itemsitems", items);
     return res.json({
       success: true,
       items,
@@ -140,9 +140,13 @@ router.put("/:itemId", async (req, res) => {
       });
     }
 
-    const item = await Items.findOneAndUpdate({ id: itemId }, validateData.data, {
-      new: true,
-    });
+    const item = await Items.findOneAndUpdate(
+      { id: itemId },
+      validateData.data,
+      {
+        new: true,
+      }
+    );
     if (!item) {
       return res.status(404).json({
         message: "item not found",
@@ -163,17 +167,19 @@ router.put("/:itemId", async (req, res) => {
 
 router.delete("/", async (req, res) => {
   try {
-    const itemsToDelete = req.body;
-    console.log(":itemsToDelete", itemsToDelete);
+    console.log("to delete");
 
-    if (!Array.isArray(itemsToDelete) || itemsToDelete.length === 0) {
+    const { ids } = req.body;
+    console.log(":itemsToDelete", ids);
+
+    if (!Array.isArray(ids) || ids.length === 0) {
       return res.status(400).json({
         success: false,
         message: "Invalid input: expected non-empty array of items to delete",
       });
     }
 
-    const deleteResult = await Items.deleteMany({id: itemsToDelete})
+    const deleteResult = await Items.deleteMany({ id: ids });
 
     if (deleteResult.deletedCount === 0) {
       return res.status(404).json({
