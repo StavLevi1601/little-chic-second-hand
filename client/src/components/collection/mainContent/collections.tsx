@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import pencilOutline from '@iconify-icons/mdi/pencil-circle';
+import trashOutline from '@iconify-icons/mdi/trash-circle';
+
 import { mockImage } from '../../../mock/collection-shop';
 import { ItemSchema } from '../../../validations/itemSchema';
 import { DetailsCollection } from './details-collection';
@@ -8,7 +10,7 @@ import {
   CollectionImage,
   CollectionSubContainer,
 } from './shop-collection.style';
-import { StyledEditIcon } from './collections.styled';
+import { IconContainer, IconWrapper, StyledIcon } from './collections.styled';
 
 type Props = {
   collections: ItemSchema[];
@@ -17,6 +19,7 @@ type Props = {
   allowSelection: boolean;
   isMyCollection: boolean;
   onEditClick?: (item: ItemSchema) => void;
+  onDeleteClick?: (item: ItemSchema) => void;
 };
 
 export function Collections({
@@ -26,6 +29,7 @@ export function Collections({
   allowSelection,
   isMyCollection,
   onEditClick,
+  onDeleteClick,
 }: Props) {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const isSelected = (id: string) => selectedIds.includes(id);
@@ -58,8 +62,23 @@ export function Collections({
     }
   };
 
+  const handleDeleteClick = (e: React.MouseEvent, item: ItemSchema) => {
+    e.stopPropagation();
+    if (onDeleteClick && item) {
+      onDeleteClick(item);
+    }
+  };
+
   const editIcon = (item: ItemSchema) => (
-    <StyledEditIcon icon={pencilOutline} onClick={(e) => handleEditClick(e, item)} />
+    <IconWrapper onClick={(e) => handleEditClick(e, item)}>
+      <StyledIcon icon={pencilOutline} />
+    </IconWrapper>
+  );
+
+  const deleteIcon = (item: ItemSchema) => (
+    <IconWrapper onClick={(e) => handleDeleteClick(e, item)}>
+      <StyledIcon icon={trashOutline} />
+    </IconWrapper>
   );
 
   return (
@@ -69,17 +88,18 @@ export function Collections({
           key={collection.id}
           onMouseOver={() => handleOver(collection.id)}
           onMouseLeave={handleLeave}
-          transform={hoveredId === collection.id ? 'scale(1.2)' : 'scale(1)'}
-          transition="transform 0.3s ease-in-out"
           style={{
             transform: hoveredId === collection.id ? 'scale(1.2)' : 'scale(1)',
             transition: 'transform 0.3s ease-in-out',
           }}
         >
-          {isMyCollection && hoveredId === collection.id && editIcon(collection)}
+          {isMyCollection && hoveredId === collection.id && (
+            <IconContainer>
+              {editIcon(collection)}
+              {deleteIcon(collection)}
+            </IconContainer>
+          )}
           <CollectionImage
-            fontStyle={isSelected(collection.id) ? 'bold' : 'normal'}
-            border={isSelected(collection.id) ? '2px solid gray' : 'none'}
             src={collection.image ? collection.image : mockImage}
             alt={`Collection Image ${collection.id + 1}`}
             onClick={() => handleSelection(collection.id)}

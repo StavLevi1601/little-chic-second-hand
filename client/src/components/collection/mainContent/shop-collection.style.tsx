@@ -13,30 +13,18 @@ export const CollectionSubContainer = styled.div`
   width: 100%;
 `;
 
-type CollectionImageProps = {
-  fontStyle: 'bold' | 'normal';
-  border: '2px solid gray' | 'none';
-};
-export const CollectionImage = styled.img<CollectionImageProps>`
+export const CollectionImage = styled.img`
   object-fit: contain;
   width: 100%;
-  font-weight: ${(props) => props.fontStyle};
-  border: ${(props) => props.border};
 `;
 
-type CollectionDetailsProps = {
-  transform: 'scale(1.2)' | 'scale(1)';
-  transition: 'transform 0.3s ease-in-out';
-};
-
-export const CollectionDetails = styled.div<CollectionDetailsProps>`
+export const CollectionDetails = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  transform: ${(props) => props.transform}
-  transition: ${(props) => props.transition}
 `;
 
 // transform: hoveredId === collection.id ? 'scale(1.2)' : 'scale(1)',
